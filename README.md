@@ -1,84 +1,9 @@
-import tkinter as tk
-import uuid
-from abc import ABC, abstractmethod
+Le but de ce projet est de créer une application de reservation de salle. Cette application comporte une interface graphique permettant à l’utilisateur d’intéragir pour réserver des salles selon des horaires, ainsi que pour l’administrateur de pouvoir gérer les salles (en ajouter ou supprimer).
 
-class Model:
-    def __init__(self):
-        self.uuid = []
 
-    def append(self, item):
-        self.uuid.append(item)
 
-    def clear(self):
-        self.uuid = []
-
-class Controller:
-    def __init__(self, model, view):
-        self.model = model
-        self.view = view
+L’application permettra un nombre de fonctionnalités qui seront décrite ci-dessous:
+    - Possibilité de réserver une salle libre sur des horaires à la minute près
+    - Affichage des salle disponible sur une plage horaires
+    - Affichage des créneaux libres ou occupés d’une salle 
     
-    def start(self):
-        self.view.setup(self)
-        self.view.start_main_loop()
-
-    def handle_click_generate_uuid(self):
-        # generate a uuid and add it to the list
-        newid = uuid.uuid4()
-        self.model.append(newid)
-        self.view.append_to_list(newid)
-
-    def handle_click_clear_list(self):
-        # clear the uuid list in the model and the view
-        self.model.clear()
-        self.view.clear_list()
-
-class View(ABC):
-    @abstractmethod
-    def setup(self, controller):
-        pass
-
-    @abstractmethod
-    def append_to_list(self, item):
-        pass
-
-    @abstractmethod
-    def clear_list(self):
-        pass
-    
-    @abstractmethod
-    def start_main_loop(self):
-        pass
-
-class TkView(View):
-    def setup(self, controller):
-
-        # setup tkinter
-        self.root = tk.Tk()
-        self.root.geometry("400x400")
-        self.root.title("UUIDGen")
-
-        # create the gui
-        self.frame = tk.Frame(self.root)
-        self.frame.pack(fill=tk.BOTH, expand=1)
-        self.label = tk.Label(self.frame, text="Result:")
-        self.label.pack()
-        self.list = tk.Listbox(self.frame)
-        self.list.pack(fill=tk.BOTH, expand=1)
-        self.generate_uuid_button = tk.Button(self.frame, text="Generate UUID", command=controller.handle_click_generate_uuid)
-        self.generate_uuid_button.pack()
-        self.clear_button = tk.Button(self.frame, text="Clear list", command=controller.handle_click_clear_list)
-        self.clear_button.pack()
-
-    def append_to_list(self, item):
-        self.list.insert(tk.END, item)
-
-    def clear_list(self):
-        self.list.delete(0, tk.END)
-    
-    def start_main_loop(self):
-        # start the loop
-        self.root.mainloop()
-
-# create the MVC & start the application
-c = Controller(Model(), TkView())
-c.start()
