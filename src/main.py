@@ -64,13 +64,29 @@ class TkView(View):
         self.frame.pack(fill=tk.BOTH, expand=1)
         self.label = tk.Label(self.frame, text="Result:", bg="white")
         self.label.pack()
+        self.Ajouter_un_nouveau_client = tk.Button(self.frame, text="Ajouter un nouveau client")
+        self.Ajouter_un_nouveau_client.pack()
+        self.Ajouter_une_nouvelle_salle = tk.Button(self.frame, text="Ajouter une nouvelle salle")
+        self.Ajouter_une_nouvelle_salle.pack()
+        self.Afficher_les_salles_réservables = tk.Button(self.frame, text="Afficher les salles réservables")
+        self.Afficher_les_salles_réservables.pack()
+        self.Afficher_les_réservations_pour_un_client = tk.Button(self.frame, text="Afficher les réservations pour un client")
+        self.Afficher_les_réservations_pour_un_client.pack()
+        self.Identifier_si_une_salle_est_disponible_sur_un_créneau = tk.Button(self.frame, text="Identifier si une salle est disponible sur un créneau")
+        self.Identifier_si_une_salle_est_disponible_sur_un_créneau.pack()
+        self.Afficher_les_salles_disponibles_pour_un_créneau = tk.Button(self.frame, text="Afficher les salles disponibles pour un créneau")
+        self.Afficher_les_salles_disponibles_pour_un_créneau.pack()
+        self.Réserver_une_salle = tk.Button(self.frame, text="Réserver une salle")
+        self.Réserver_une_salle.pack()
+
+        '''
         self.list = tk.Listbox(self.frame, bg="blue", fg="white")
         self.list.pack(fill=tk.BOTH, expand=1)
         self.generate_uuid_button = tk.Button(self.frame, text="Generate UUID", command=controller.handle_click_generate_uuid)
         self.generate_uuid_button.pack()
         self.clear_button = tk.Button(self.frame, text="Clear list", command=controller.handle_click_clear_list)
         self.clear_button.pack()
-
+        '''
     def append_to_list(self, item):
         self.list.insert(tk.END, item)
 
