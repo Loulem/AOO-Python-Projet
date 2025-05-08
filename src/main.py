@@ -1,6 +1,8 @@
 import tkinter as tk
 import uuid
 from abc import ABC, abstractmethod
+from model import Model
+
 
 class Model:
     def __init__(self):
