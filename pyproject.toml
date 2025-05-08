@@ -1,0 +1,17 @@
+[project]
+name = "reservationApp"
+version = "0.1.0"
+description = ""
+authors = [{ name = "Lou Lemarechal", email = "lou.lemarechal@uha.fr" },{ name = "Mael Legoff", email = "mael.legoff@uha.fr"}]
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "BSD-3-Clause" }
+classifiers = ["Programming Language :: Python :: 3"]
+dependencies = ["uuid", "datetime"]
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project.optional-dependencies]
+test = ["pytest >= 8.1.1"]

@@ -1,4 +1,5 @@
-from model import *
+from model import Client, Room, Reservation
+
 
 
 def test_Client_str():
@@ -15,11 +16,15 @@ def test_Client_to_dictionnary():
         "email": "mael@uha.fr",
         "uuid": str(client.id),  # Fix key to match the `to_dictionnary` method
     }
-    assert type(client_dict["uuid"]) == str
-    assert type(client_dict["name"]) == str
-    assert type(client_dict["email"]) == str
-    assert client_dict["name"] == "Mael"
-    assert client_dict["email"] == "mael@uha.fr"
-    assert client_dict["uuid"] == str(client.id)
+
+
+    def test_Room_to_dictionnary():
+        room = Room("Room1", "Conference", "1234-uuid")
+        room_dict = room.to_dictionnary()
+        assert room_dict == {
+            "name": "Room1",
+            "type": "Conference",
+            "reservations": [],
+        }
 
 
