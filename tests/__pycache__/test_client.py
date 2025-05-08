@@ -1,4 +1,4 @@
-from model import Client
+from model import *
 
 
 def test_Client_str():
