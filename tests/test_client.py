@@ -1,4 +1,4 @@
-from model import Client, Room, Reservation, Controller, TimeSlot, date, time, timedelta
+from model import *
 
 
 
