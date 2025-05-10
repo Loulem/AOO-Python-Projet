@@ -51,6 +51,7 @@ class Room():
             "type": self.type,
             "reservations": [reservation.to_dictionnary() for reservation in self._reservations] 
             
+            
         }
 
 
@@ -83,11 +84,10 @@ class Controller():
         self._reservations : dict[str,Reservation] = {}
 
 
-    def load_data(self, file ) -> None:
+    def load_data(self, file :str ) -> None:
         """Load the data from a json file """
         with open(file, "r", encoding="utf-8") as f:
             data = json.load(f)
-            print(data)
             # Load clients
             for client_id, client_data in data["clients"].items():
                 client = Client(client_data["name"], client_data["first_name"], client_data["email"])
@@ -102,9 +102,9 @@ class Controller():
                 for reservation_data in room_data["reservations"]:
                     reservation = Reservation(reservation_data["name"], 
                                               TimeSlot(
-                                                  datetime.fromisoformat(reservation_data["timeSlot"]["start_day"]),
+                                                  date.fromisoformat(reservation_data["timeSlot"]["start_day"]),
                                                   time.fromisoformat(reservation_data["timeSlot"]["start_hour"]),
-                                                  timedelta(int(reservation_data["timeSlot"]["hours"]), int(reservation_data["timeSlot"]["minutes"]))
+                                                  timedelta(hours = int(reservation_data["timeSlot"]["hours"]), minutes = int(reservation_data["timeSlot"]["minutes"]))
                                               ),
                                               reservation_data["client_id"]
                                           )
@@ -212,8 +212,9 @@ class TimeSlot():
 
 if __name__ == "__main__":
 
-    # Example usage
-    # Create a controller instance and add some clients
+
+
+    
     controller = Controller()
     controller.add_client("Mael","Legoff", "mael@uha.fr")
     controller.add_client("Lou","Lemarechal" ,"lou@uha.fr")
@@ -221,12 +222,33 @@ if __name__ == "__main__":
     controller.add_rooms("Room1", "Conference")
     controller.add_rooms("Room2", "Meeting")
     mael_uuid = controller.get_client_uuid("Mael")
+    mael_uuid = controller.get_client_uuid("Mael")
     controller.add_reservations("Room1", TimeSlot(date(2023, 10, 1), time(12,30), timedelta(hours=1,minutes=10)), controller._clients[mael_uuid].id)
+    controller.save_data("./src/data/test.json")
+    controller2 = Controller()
+    controller2.load_data("./src/data/test.json")
+    #print(controller2.data_to_dictionnary())
+    #print( controller.data_to_dictionnary())
+
+
+
+
+
+    # # Example usage
+    # # Create a controller instance and add some clients
+    # controller = Controller()
+    # controller.add_client("Mael","Legoff", "mael@uha.fr")
+    # controller.add_client("Lou","Lemarechal" ,"lou@uha.fr")
+    # controller.add_client("Paul", "tin","paul@gmail.com")
+    # controller.add_rooms("Room1", "Conference")
+    # controller.add_rooms("Room2", "Meeting")
+    # mael_uuid = controller.get_client_uuid("Mael")
+    # controller.add_reservations("Room1", TimeSlot(date(2023, 10, 1), time(12,30), timedelta(hours=1,minutes=10)), controller._clients[mael_uuid].id)
     
 
-    print(controller.data_to_dictionnary())
-    controller.save_data("./src/data/test.json")
-    controller.load_data("./src/data/test.json")
+    # print(controller.data_to_dictionnary())
+    # controller.save_data("./src/data/test.json")
+    # controller.load_data("./src/data/test.json")
 
 
 
