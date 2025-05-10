@@ -1,0 +1,46 @@
+{
+    "clients": {
+        "1d756334-de5f-436e-97c5-ef89b5b61ab1": {
+            "name": "Mael",
+            "first_name": "Legoff",
+            "email": "mael@uha.fr",
+            "uuid": "1d756334-de5f-436e-97c5-ef89b5b61ab1"
+        },
+        "a9f198ff-0349-45fe-8e46-e8cbb0f8946f": {
+            "name": "Lou",
+            "first_name": "Lemarechal",
+            "email": "lou@uha.fr",
+            "uuid": "a9f198ff-0349-45fe-8e46-e8cbb0f8946f"
+        },
+        "99670c55-5edc-4ef7-9cac-9b22eac04e67": {
+            "name": "Paul",
+            "first_name": "tin",
+            "email": "paul@gmail.com",
+            "uuid": "99670c55-5edc-4ef7-9cac-9b22eac04e67"
+        }
+    },
+    "rooms": {
+        "Room1": {
+            "name": "Room1",
+            "type": "Conference",
+            "reservations": [
+                {
+                    "id": "649be848-ab14-422e-bd05-8d1afb0a2a88",
+                    "name": "Room1",
+                    "client_id": "1d756334-de5f-436e-97c5-ef89b5b61ab1",
+                    "timeSlot": {
+                        "start_day": "2023-10-01",
+                        "start_hour": "12:30:00",
+                        "hours": "1",
+                        "minutes": "10"
+                    }
+                }
+            ]
+        },
+        "Room2": {
+            "name": "Room2",
+            "type": "Meeting",
+            "reservations": []
+        }
+    }
+}
