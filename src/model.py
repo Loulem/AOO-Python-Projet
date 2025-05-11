@@ -45,9 +45,6 @@ class Controller():
 
     def data_to_dictionnary(self) -> dict [str,dict[str,dict]]:
         """Return the data in a dictionnary format"""
-        #TODO: make the method more clean
-        
-
         clients = {client_id: client_data.to_dictionnary() for client_id, client_data in self._clients.items()}
         rooms = {room_name: room_data.to_dictionnary() for room_name, room_data in self._rooms.items()}
         return  {
