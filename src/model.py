@@ -4,7 +4,9 @@ from client import *
 from reservation import *
 from room import *
 import json
-
+class Reservation_app_error(Exception):
+    """Base class for all exceptions raised by the reservation app"""
+    pass
 
 
 class Controller():
@@ -63,9 +65,18 @@ class Controller():
     
     def add_client(self, name : str, first_name : str ,email : str) -> None :
         """Add a new client to the model"""
+        print(self.clients_name)
+        if name in self.clients_name:
+            raise Reservation_app_error(f"Client {name} already exists")
         new_client = Client(name,first_name,email)
         self._clients[new_client.id] = new_client
+
+    @property
+    def clients_name(self) -> list[str]:
+        """Get the name of a client by his name"""
+        return [client.name for client in self._clients.values()]
     
+
 
     def get_clients_infos(self,name : str)->str:
         clients_infos = []
@@ -73,7 +84,7 @@ class Controller():
             if client.name == name:
                 clients_infos.append(client.to_dictionnary())
         if len(clients_infos) == 0:
-            raise ValueError(f"No client named {name}")
+            raise Reservation_app_error(f"No client named {name}")
         return clients_infos
         
     
@@ -82,7 +93,7 @@ class Controller():
         for client in self._clients.values():
             if client.name == name:
                 return client.id
-        raise ValueError(f"No client named {name}")
+        raise Reservation_app_error(f"No client named {name}")
     
     def add_room(self, name : str, type : str) -> None:
         """Add a new room to the model"""
@@ -128,7 +139,6 @@ if __name__ == "__main__":
     controller.save_data("./src/data/test.json")
     controller2 = Controller()
     controller2.load_data("./src/data/test.json")
-    print(controller.data_to_dictionnary())
     #print(controller2.data_to_dictionnary())
     #print( controller.data_to_dictionnary())
 

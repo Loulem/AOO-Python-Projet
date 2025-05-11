@@ -1,6 +1,6 @@
 from client import *
-
-
+from controller import *
+import pytest
 
 def test_Client_str():
     client = Client("Mael", "Legoff", "mael@uha.fr")

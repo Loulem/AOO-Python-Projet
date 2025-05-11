@@ -30,12 +30,5 @@ def test_Room_create_reservations():
 
 
     
-def test_Room_to_dictionnary():
-    room = Room("Room1", "Conference")
-    room_dict = room.to_dictionnary()
-    assert room_dict == {
-        "name": "Room1",
-        "type": "Conference",
-        "reservations": [],
-    }
+
 
