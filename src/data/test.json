@@ -1,22 +1,22 @@
 {
     "clients": {
-        "d319fd31-4030-4f6d-be18-81cfe530b601": {
+        "bc73db96-f356-4e64-86e1-95dad3987f02": {
             "name": "Mael",
             "first_name": "Legoff",
             "email": "mael@uha.fr",
-            "uuid": "d319fd31-4030-4f6d-be18-81cfe530b601"
+            "uuid": "bc73db96-f356-4e64-86e1-95dad3987f02"
         },
-        "09af6501-14d2-4c1a-84c6-50d6ddc61907": {
+        "5ce19fa6-7d95-43eb-aa71-870e88c4064c": {
             "name": "Lou",
             "first_name": "Lemarechal",
             "email": "lou@uha.fr",
-            "uuid": "09af6501-14d2-4c1a-84c6-50d6ddc61907"
+            "uuid": "5ce19fa6-7d95-43eb-aa71-870e88c4064c"
         },
-        "ed252cce-ae80-426e-b5db-783fb81a0b6c": {
+        "d0cff50b-072a-46c0-86fd-d41962ca26ed": {
             "name": "Paul",
             "first_name": "tin",
             "email": "paul@gmail.com",
-            "uuid": "ed252cce-ae80-426e-b5db-783fb81a0b6c"
+            "uuid": "d0cff50b-072a-46c0-86fd-d41962ca26ed"
         }
     },
     "rooms": {
@@ -25,10 +25,10 @@
             "type": "Conference",
             "reservations": [
                 {
-                    "id": "ec47d680-9b15-4aa1-9eca-f2cb20be46e8",
+                    "id": "205df41e-1a10-4eb2-ad74-18d83b626847",
                     "name": "Room1",
-                    "client_id": "d319fd31-4030-4f6d-be18-81cfe530b601",
-                    "timeSlot": {
+                    "client_id": "bc73db96-f356-4e64-86e1-95dad3987f02",
+                    "timeInterval": {
                         "start_day": "2023-10-01",
                         "start_hour": "12:30:00",
                         "hours": "1",

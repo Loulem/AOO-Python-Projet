@@ -8,16 +8,19 @@ class Room():
         self._reservations : list[Reservation] = [] # contient les objets réservations attribuer à la salle
         
         
-    def create_reservations(self, timeSlot : TimeSlot, client_id : str ) -> Reservation:
+    def create_reservations(self, time_interval : TimeInterval, client_id : str ) -> Reservation:
         """Add a reservation to the room"""
-        new_reservation = Reservation( self.name, timeSlot, client_id)
+        new_reservation = Reservation( self.name, time_interval, client_id)
         self._reservations.append(new_reservation)
         return new_reservation
         
 
-    def is_available(self,timestamp:timedelta) -> bool:
-        """Return true if the room is available for the timestamp"""
-        pass
+    def is_available(self,time_interval:TimeInterval) -> bool:
+        """Return true if the room is available during the time interval"""
+        for reservation in self._reservations:
+           if reservation.overlap_with(time_interval.start_time, time_interval.end_time):
+                return False
+        return True
 
     def to_dictionnary(self) -> dict:
         return {
@@ -27,5 +30,7 @@ class Room():
             
             
         }
+    def __str__(self) -> str:
+        return f"{{name : {self.name}, type : {self.type}}}"
 
 

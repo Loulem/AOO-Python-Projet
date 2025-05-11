@@ -1,41 +1,36 @@
-from datetime import date , timedelta , datetime, time
+from time_Interval import *
 import uuid
 
-class TimeSlot():
-    def __init__(self, start_day : datetime, start_hour : time , duration : timedelta) -> None:
-        self.start_day = start_day
-        self.start_hour = start_hour
-        self.duration = duration
-        
-        
-    def __str__(self) -> str:
-        return f"{{start_time : {self.start_time}; end_time : {self.end_time}}}"
-    
-    def to_dictionnary(self) -> dict:
-        return {
-            "start_day": self.start_day.isoformat(),
-            "start_hour": self.start_hour.isoformat(),
-            "hours": str(self.duration).split(":")[0],
-            "minutes": str(self.duration).split(":")[1],
-        }
-    
 
 
 
 class Reservation():
-    def __init__(self, room : str, timeSlot : TimeSlot, client_id : uuid.UUID) -> None:
+    def __init__(self, room : str, time_interval : TimeInterval, client_id : uuid.UUID) -> None:
         self.id = str(uuid.uuid4())
         self.room = room
-        self.timeSlot = timeSlot
-        self.client_id = client_id # uuid of the client who made the reservation
+        self.time_interval = time_interval
+        self.client_id = client_id 
         
+    def overlap_with(self, time_interval_start: datetime, time_interval_end: datetime) -> bool:
+        """Check if the reservation conflicts with the given time interval"""
+        reservation_start = self.time_interval.start_time
+        reservation_end = self.time_interval.end_time
+        if (time_interval_start  >= reservation_end):
+            return False
+        if (time_interval_end <= reservation_start):
+            return False
     
+        return True
+    
+
     def to_dictionnary(self) -> dict:
+        """Return the reservation in a dictionnary format"""
         return {
             "id": self.id,
             "name": self.room,
             "client_id": self.client_id,
-            "timeSlot": self.timeSlot.to_dictionnary(),
+            "timeInterval": self.time_interval.to_dictionnary(),
         }
-    
+    def __str__(self) -> str:
+        return f"{{id : {self.id}, room : {self.room}, client_id : {self.client_id}, time_interval : {self.time_interval}}}"
 

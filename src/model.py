@@ -5,15 +5,6 @@ from reservation import *
 from room import *
 import json
 
-"""class datetime.timedelta
-A duration expressing the difference between two datetime or date instances to microsecond resolution."""
-
-
-
-
-
-
-
 
 
 class Controller():
@@ -22,9 +13,9 @@ class Controller():
         self._rooms : dict[str,Room] = {}
         self._reservations : dict[str,Reservation] = {}
 
-
     def load_data(self, file :str ) -> None:
         """Load the data from a json file """
+        #TODO:try to load data with alternative constructors in clients rooms and reservations
         with open(file, "r", encoding="utf-8") as f:
             data = json.load(f)
             # Load clients
@@ -40,37 +31,28 @@ class Controller():
                 # Load reservations for each room
                 for reservation_data in room_data["reservations"]:
                     reservation = Reservation(reservation_data["name"], 
-                                              TimeSlot(
-                                                  date.fromisoformat(reservation_data["timeSlot"]["start_day"]),
-                                                  time.fromisoformat(reservation_data["timeSlot"]["start_hour"]),
-                                                  timedelta(hours = int(reservation_data["timeSlot"]["hours"]), minutes = int(reservation_data["timeSlot"]["minutes"]))
+                                              TimeInterval(
+                                                  date.fromisoformat(reservation_data["timeInterval"]["start_day"]),
+                                                  time.fromisoformat(reservation_data["timeInterval"]["start_hour"]),
+                                                  timedelta(hours = int(reservation_data["timeInterval"]["hours"]), minutes = int(reservation_data["timeInterval"]["minutes"]))
                                               ),
                                               reservation_data["client_id"]
                                           )
                     reservation.id = reservation_data["id"]  # Set the UUID from the loaded data
-                    room._reservations.append(reservation)
-                    self._reservations[reservation.id] = reservation
-            # Load reservations
+                    room._reservations.append(reservation) # add the reservation to the room
+                    self._reservations[reservation.id] = reservation # add the reservation to the controller
             
-        
-        pass
 
     def data_to_dictionnary(self) -> dict [str,dict[str,dict]]:
         """Return the data in a dictionnary format"""
-        rooms: dict[str,Room] = {} # a dictionnary with the name of the room as key and the uuid of the client as value
-        clients: dict[str,dict] = {} # a dictionnary with the name of the client as key and the uuid of the client as value
-        reservations: dict[str,dict] = {} # a dictionnary with the name of the reservation as key and the uuid of the client as value
-        for client in self._clients.values():
-            clients[client.id.__str__()] = client.to_dictionnary()
-        for room in self._rooms.values():
-            rooms[room.name] = room.to_dictionnary()
-        # for reservation in self._reservations.values():
-        #     reservations[str(reservation.id)] = reservation.to_dictionnary()
- 
+        #TODO: make the method more clean
+        
+
+        clients = {client_id: client_data.to_dictionnary() for client_id, client_data in self._clients.items()}
+        rooms = {room_name: room_data.to_dictionnary() for room_name, room_data in self._rooms.items()}
         return  {
             "clients" : clients,
             "rooms" : rooms,
-            #"reservation" : reservations,
         }
 
     def save_data(self, file ) -> None:
@@ -105,24 +87,24 @@ class Controller():
                 return client.id
         raise ValueError(f"No client named {name}")
     
-    def add_rooms(self, name : str, type : str) -> None:
+    def add_room(self, name : str, type : str) -> None:
         """Add a new room to the model"""
         new_room = Room(name,type)
         self._rooms[name] = new_room
         pass
 
-    def get_room_available_time_slot(self, room : Room, timeSlot : timedelta) -> list:
+    def get_room_available_time_slot(self, room : Room, time_interval : timedelta) -> list:
         """Show all the available time slot for a room"""
         pass
 
     def get_rooms_available(self)->list[Room]:
-        """Give a list of all the available room for a timestamp"""
+        """Give a list of all the available room for a time interval"""
         pass
 
 
-    def add_reservations(self, room : str, timeSlot : TimeSlot, client_id : str) -> Reservation:
+    def add_reservation(self, room : str, time_interval : TimeInterval, client_id : str) -> Reservation:
         """Create a new reservation for a room"""
-        new_reservation = self._rooms[room].create_reservations(timeSlot,client_id)
+        new_reservation = self._rooms[room].create_reservations(time_interval,client_id)
         self._reservations[new_reservation.id] = new_reservation
         
 
@@ -141,14 +123,15 @@ if __name__ == "__main__":
     controller.add_client("Mael","Legoff", "mael@uha.fr")
     controller.add_client("Lou","Lemarechal" ,"lou@uha.fr")
     controller.add_client("Paul", "tin","paul@gmail.com")
-    controller.add_rooms("Room1", "Conference")
-    controller.add_rooms("Room2", "Meeting")
+    controller.add_room("Room1", "Conference")
+    controller.add_room("Room2", "Meeting")
     mael_uuid = controller.get_client_uuid("Mael")
     mael_uuid = controller.get_client_uuid("Mael")
-    controller.add_reservations("Room1", TimeSlot(date(2023, 10, 1), time(12,30), timedelta(hours=1,minutes=10)), controller._clients[mael_uuid].id)
+    controller.add_reservation("Room1", TimeInterval(date(2023, 10, 1), time(12,30), timedelta(hours=1,minutes=10)), controller._clients[mael_uuid].id)
     controller.save_data("./src/data/test.json")
     controller2 = Controller()
     controller2.load_data("./src/data/test.json")
+    print(controller.data_to_dictionnary())
     #print(controller2.data_to_dictionnary())
     #print( controller.data_to_dictionnary())
 
