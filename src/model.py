@@ -120,6 +120,14 @@ class Controller():
 
     def add_reservation(self, room : str, time_interval : TimeInterval, client_id : str) -> Reservation:
         """Create a new reservation for a room"""
+        if room not in self._rooms:
+            raise Reservation_app_error(f"Room {room} does not exist")
+        if client_id not in self._clients:
+            raise Reservation_app_error(f"Client {client_id} does not exist")
+        if not self._rooms[room].is_available(time_interval):
+            raise Reservation_app_error(f"Room {room} is not available for the time interval {time_interval}")
+        if time_interval.start_time < datetime.today():
+            raise Reservation_app_error(f"The start of the reservation is in the past")
         new_reservation = self._rooms[room].create_reservations(time_interval,client_id)
         self._reservations[new_reservation.id] = new_reservation
         
