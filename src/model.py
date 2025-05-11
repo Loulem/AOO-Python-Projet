@@ -127,7 +127,7 @@ class Controller():
         if not self._rooms[room].is_available(time_interval):
             raise Reservation_app_error(f"Room {room} is not available for the time interval {time_interval}")
         if time_interval.start_time < datetime.today():
-            raise Reservation_app_error(f"The start of the reservation is in the past")
+            raise Reservation_app_error(f"The start of the reservation is past")
         new_reservation = self._rooms[room].create_reservations(time_interval,client_id)
         self._reservations[new_reservation.id] = new_reservation
         
