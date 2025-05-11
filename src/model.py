@@ -65,7 +65,6 @@ class Controller():
     
     def add_client(self, name : str, first_name : str ,email : str) -> None :
         """Add a new client to the model"""
-        print(self.clients_name)
         if name in self.clients_name:
             raise Reservation_app_error(f"Client {name} already exists")
         new_client = Client(name,first_name,email)
@@ -73,7 +72,7 @@ class Controller():
 
     @property
     def clients_name(self) -> list[str]:
-        """Get the name of a client by his name"""
+        """Get a list of clients name"""
         return [client.name for client in self._clients.values()]
     
 
@@ -95,20 +94,29 @@ class Controller():
                 return client.id
         raise Reservation_app_error(f"No client named {name}")
     
+
+
+    
     def add_room(self, name : str, type : str) -> None:
         """Add a new room to the model"""
+        if name in self.rooms_name:
+            raise Reservation_app_error(f"Room {name} already exists")
         new_room = Room(name,type)
         self._rooms[name] = new_room
         pass
 
-    def get_room_available_time_slot(self, room : Room, time_interval : timedelta) -> list:
-        """Show all the available time slot for a room"""
+    def get_room_available_time_interval(self, room : Room, time_interval : timedelta) -> list:
+        """Show all the available time interval for a room"""
         pass
 
     def get_rooms_available(self)->list[Room]:
         """Give a list of all the available room for a time interval"""
         pass
 
+    @property
+    def rooms_name(self) -> list[str]:
+        """Get a list of rooms name"""
+        return [room.name for room in self._rooms.values()]
 
     def add_reservation(self, room : str, time_interval : TimeInterval, client_id : str) -> Reservation:
         """Create a new reservation for a room"""
@@ -139,28 +147,9 @@ if __name__ == "__main__":
     controller.save_data("./src/data/test.json")
     controller2 = Controller()
     controller2.load_data("./src/data/test.json")
-    #print(controller2.data_to_dictionnary())
-    #print( controller.data_to_dictionnary())
 
 
 
-
-
-    # # Example usage
-    # # Create a controller instance and add some clients
-    # controller = Controller()
-    # controller.add_client("Mael","Legoff", "mael@uha.fr")
-    # controller.add_client("Lou","Lemarechal" ,"lou@uha.fr")
-    # controller.add_client("Paul", "tin","paul@gmail.com")
-    # controller.add_rooms("Room1", "Conference")
-    # controller.add_rooms("Room2", "Meeting")
-    # mael_uuid = controller.get_client_uuid("Mael")
-    # controller.add_reservations("Room1", TimeSlot(date(2023, 10, 1), time(12,30), timedelta(hours=1,minutes=10)), controller._clients[mael_uuid].id)
-    
-
-    # print(controller.data_to_dictionnary())
-    # controller.save_data("./src/data/test.json")
-    # controller.load_data("./src/data/test.json")
 
 
 
