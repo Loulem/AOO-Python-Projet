@@ -1,9 +1,9 @@
-from reservationApp.model.model import *
+from reservationApp.controller import *
 import pytest
 def test_is_saved_uuid_a_string():
     controller = Controller()
     controller.add_client("Mael", "Legoff","mael@uha.fr")
-    assert type( list( list( controller.data_to_dictionnary().values() )[0].keys() ) [0]) == str  # Check if the uuid is a string
+    assert type( list( list( controller.model.data_to_dictionnary().values() )[0].keys() ) [0]) == str  # Check if the uuid is a string
 
 
 def test_if_saved_are_correctly_loaded():
@@ -22,7 +22,7 @@ def test_if_saved_are_correctly_loaded():
     controller.save_data("./data/test.json")
     controller2 = Controller()
     controller2.load_data("./data/test.json")
-    assert controller2.data_to_dictionnary() == controller.data_to_dictionnary()
+    assert controller2.model.data_to_dictionnary() == controller.model.data_to_dictionnary()
 
 
 

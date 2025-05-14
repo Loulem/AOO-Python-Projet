@@ -1,5 +1,5 @@
 from reservationApp.model.client import *
-from reservationApp.model.model import *
+from reservationApp.controller import *
 import pytest
 
 def test_Client_str():

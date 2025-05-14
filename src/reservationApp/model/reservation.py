@@ -19,8 +19,6 @@ class ReservationsManager():
         self.reservations[new_reservation.id] = new_reservation
 
 
-
-
 class Reservation():
     def __init__(self, room : str, time_interval : TimeInterval, client_id : uuid.UUID) -> None:
         self.id = str(uuid.uuid4())
