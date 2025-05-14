@@ -21,10 +21,10 @@ class Controller():
         with open(file, "r", encoding="utf-8") as f:
             data = json.load(f)
             # Load clients
-            for client_id, client_data in data["clients"].items():
+            for client_email, client_data in data["clients"].items():
                 client = Client(client_data["name"], client_data["first_name"], client_data["email"])
-                client.id = client_id   # Set the UUID from the loaded data 
-                self._clients[client_id] = client
+                client.id = client_data["uuid"]   # Set the UUID from the loaded data 
+                self._clients[client_email] = client
 
             # Load rooms
             for room_name, room_data in data["rooms"].items():
@@ -68,7 +68,7 @@ class Controller():
         if name in self.clients_name:
             raise Reservation_app_error(f"Client {name} already exists")
         new_client = Client(name,first_name,email)
-        self._clients[new_client.id] = new_client
+        self._clients[new_client._email] = new_client
 
     @property
     def clients_name(self) -> list[str]:
@@ -77,14 +77,9 @@ class Controller():
     
 
 
-    def get_clients_infos(self,name : str)->str:
-        clients_infos = []
-        for client in self._clients.values():
-            if client.name == name:
-                clients_infos.append(client.to_dictionnary())
-        if len(clients_infos) == 0:
-            raise Reservation_app_error(f"No client named {name}")
-        return clients_infos
+    def get_clients_infos(self,email : str)->str:
+        
+        return self._clients[email].to_dictionnary()
         
     
     def get_client_uuid(self, name : str) -> str:
@@ -118,17 +113,17 @@ class Controller():
         """Get a list of rooms name"""
         return [room.name for room in self._rooms.values()]
 
-    def add_reservation(self, room : str, time_interval : TimeInterval, client_id : str) -> Reservation:
+    def add_reservation(self, room : str, time_interval : TimeInterval, client_email : str) -> Reservation:
         """Create a new reservation for a room"""
         if room not in self._rooms:
             raise Reservation_app_error(f"Room {room} does not exist")
-        if client_id not in self._clients:
-            raise Reservation_app_error(f"Client {client_id} does not exist")
+        if client_email not in self._clients:
+            raise Reservation_app_error(f"Client {client_email} does not exist")
         if not self._rooms[room].is_available(time_interval):
             raise Reservation_app_error(f"Room {room} is not available for the time interval {time_interval}")
         if time_interval.start_time < datetime.today():
             raise Reservation_app_error(f"The start of the reservation has already passed")
-        new_reservation = self._rooms[room].create_reservations(time_interval,client_id)
+        new_reservation = self._rooms[room].create_reservations(time_interval,client_email)
         self._reservations[new_reservation.id] = new_reservation
         
 
@@ -151,7 +146,8 @@ if __name__ == "__main__":
     controller.add_room("Room2", "Meeting")
     mael_uuid = controller.get_client_uuid("Mael")
     mael_uuid = controller.get_client_uuid("Mael")
-    controller.add_reservation("Room1", TimeInterval(date(2023, 10, 1), time(12,30), timedelta(hours=1,minutes=10)), controller._clients[mael_uuid].id)
+    controller.add_reservation("Room1", TimeInterval(date(2026, 10, 1), time(12,30), timedelta(hours=1,minutes=10)), "mael@uha.fr")
+    print(controller.data_to_dictionnary())
     controller.save_data("./src/data/test.json")
     controller2 = Controller()
     controller2.load_data("./src/data/test.json")

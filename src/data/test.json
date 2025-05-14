@@ -1,22 +1,22 @@
 {
     "clients": {
-        "a9f3d1e4-c16c-47dc-8d42-4cc82c02fa6a": {
+        "mael@uha.fr": {
             "name": "Mael",
             "first_name": "Legoff",
             "email": "mael@uha.fr",
-            "uuid": "a9f3d1e4-c16c-47dc-8d42-4cc82c02fa6a"
+            "uuid": "9f975c87-7cee-494d-8f5d-208732b82c4e"
         },
-        "177b6460-4396-4ad6-a780-938541047ffc": {
+        "lou@uha.fr": {
             "name": "Lou",
             "first_name": "Lemarechal",
             "email": "lou@uha.fr",
-            "uuid": "177b6460-4396-4ad6-a780-938541047ffc"
+            "uuid": "496d9acb-acdb-4320-8c94-b0f6886e9e57"
         },
-        "6a44262d-19f0-4044-800c-060b26acdec3": {
+        "paul@gmail.com": {
             "name": "Paul",
             "first_name": "tin",
             "email": "paul@gmail.com",
-            "uuid": "6a44262d-19f0-4044-800c-060b26acdec3"
+            "uuid": "36b1605f-f481-45bf-a58b-02a580de50be"
         }
     },
     "rooms": {
@@ -25,11 +25,11 @@
             "type": "Conference",
             "reservations": [
                 {
-                    "id": "845ae69e-c39d-4224-90f1-8bef5d957aad",
+                    "id": "66ee100d-5d10-4244-970d-5a9105b6e0b9",
                     "name": "Room1",
-                    "client_id": "a9f3d1e4-c16c-47dc-8d42-4cc82c02fa6a",
+                    "client_id": "mael@uha.fr",
                     "timeInterval": {
-                        "start_day": "2025-05-12",
+                        "start_day": "2025-05-15",
                         "start_hour": "12:30:00",
                         "hours": "1",
                         "minutes": "10"
