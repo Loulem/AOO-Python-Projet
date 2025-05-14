@@ -1,4 +1,4 @@
-from time_Interval import *
+from reservationApp.model.time_Interval import *
 import uuid
 
 

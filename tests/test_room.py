@@ -1,4 +1,4 @@
-from room import *
+from reservationApp.model.room import *
 
 def test_Room_str():
     room = Room("Room1", "Conference")

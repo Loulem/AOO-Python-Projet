@@ -1,4 +1,4 @@
-from model import *
+from reservationApp.model.model import *
 import pytest
 def test_is_saved_uuid_a_string():
     controller = Controller()
@@ -19,9 +19,9 @@ def test_if_saved_are_correctly_loaded():
     mael_uuid = controller.get_client_uuid("Mael")
     tomorow = date.today() + timedelta(days=1)
     controller.add_reservation("Room1", TimeInterval(tomorow, time(12,30), timedelta(hours=1,minutes=10)), "mael@uha.fr")
-    controller.save_data("./src/data/test.json")
+    controller.save_data("./data/test.json")
     controller2 = Controller()
-    controller2.load_data("./src/data/test.json")
+    controller2.load_data("./data/test.json")
     assert controller2.data_to_dictionnary() == controller.data_to_dictionnary()
 
 

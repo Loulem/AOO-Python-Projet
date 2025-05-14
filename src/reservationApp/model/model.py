@@ -1,7 +1,7 @@
 from __future__ import annotations # if some class use type defined later 
-from client import *
-from reservation import *
-from room import *
+from reservationApp.model.client import *
+from reservationApp.model.reservation import *
+from reservationApp.model.room import *
 import json
 
 class Reservation_app_error(Exception):

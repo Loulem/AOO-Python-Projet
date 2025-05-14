@@ -1,5 +1,5 @@
-from reservation import *
-from room import Room
+from reservationApp.model.reservation import *
+from reservationApp.model.room import Room
 
 
 

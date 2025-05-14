@@ -1,4 +1,4 @@
-from reservation import *
+from reservationApp.model.reservation import *
 
 
 class Room():
