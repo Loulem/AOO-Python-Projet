@@ -2,6 +2,8 @@ import tkinter as tk
 import uuid
 from abc import ABC, abstractmethod
 
+
+
 class Model:
     def __init__(self):
         self.uuid = []

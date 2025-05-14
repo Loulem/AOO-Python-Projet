@@ -1,0 +1,46 @@
+{
+    "clients": {
+        "mael@uha.fr": {
+            "name": "Mael",
+            "first_name": "Legoff",
+            "email": "mael@uha.fr",
+            "uuid": "3ff3f855-9734-4fee-9da6-9f1cacce9f43"
+        },
+        "lou@uha.fr": {
+            "name": "Lou",
+            "first_name": "Lemarechal",
+            "email": "lou@uha.fr",
+            "uuid": "74a728f8-076f-4f4e-a127-c061c227520a"
+        },
+        "paul@gmail.com": {
+            "name": "Paul",
+            "first_name": "tin",
+            "email": "paul@gmail.com",
+            "uuid": "9af292d0-41a7-4c50-8053-75823bcd4e1f"
+        }
+    },
+    "rooms": {
+        "Room1": {
+            "name": "Room1",
+            "type": "Conference",
+            "reservations": [
+                {
+                    "id": "6be6582c-9631-4958-94e0-f4b0e2a4c7e7",
+                    "name": "Room1",
+                    "client_id": "mael@uha.fr",
+                    "timeInterval": {
+                        "start_day": "2025-05-15",
+                        "start_hour": "12:30:00",
+                        "hours": "1",
+                        "minutes": "10"
+                    }
+                }
+            ]
+        },
+        "Room2": {
+            "name": "Room2",
+            "type": "Meeting",
+            "reservations": []
+        }
+    }
+}
