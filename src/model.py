@@ -1,15 +1,16 @@
 from __future__ import annotations # if some class use type defined later 
-
 from client import *
 from reservation import *
 from room import *
 import json
+
 class Reservation_app_error(Exception):
     """Base class for all exceptions raised by the reservation app"""
     pass
 
 
 class Controller():
+
     def __init__(self):
         self._clients : dict[str,Client] = {}
         self._rooms : dict[str,Room] = {}
@@ -67,6 +68,8 @@ class Controller():
         """Add a new client to the model"""
         if name in self.clients_name:
             raise Reservation_app_error(f"Client {name} already exists")
+        if email in self._clients:
+            raise Reservation_app_error(f"Client {email} already exists")
         new_client = Client(name,first_name,email)
         self._clients[new_client._email] = new_client
 
@@ -117,12 +120,16 @@ class Controller():
         """Create a new reservation for a room"""
         if room not in self._rooms:
             raise Reservation_app_error(f"Room {room} does not exist")
+        
         if client_email not in self._clients:
             raise Reservation_app_error(f"Client {client_email} does not exist")
+        
         if not self._rooms[room].is_available(time_interval):
             raise Reservation_app_error(f"Room {room} is not available for the time interval {time_interval}")
+        
         if time_interval.start_time < datetime.today():
             raise Reservation_app_error(f"The start of the reservation has already passed")
+        
         new_reservation = self._rooms[room].create_reservations(time_interval,client_email)
         self._reservations[new_reservation.id] = new_reservation
         

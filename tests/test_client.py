@@ -17,6 +17,10 @@ def test_Client_to_dictionnary():
         "uuid": str(client.id),
     }
 
-
-
-
+def test_Client_email_error():
+    with pytest.raises(ClientError):
+        client = Client("Mael", "Legoff", "Mael@uhafr")
+    with pytest.raises(ClientError):
+        client = Client("Mael", "Legoff", "Mael@uha.r")
+    with pytest.raises(ClientError):
+        client = Client("Mael", "Legoff", "Maeluha.fr")
