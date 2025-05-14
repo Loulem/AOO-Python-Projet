@@ -1,7 +1,7 @@
 from __future__ import annotations # if some class use type defined later 
 from reservationApp.model.client import *
 from reservationApp.model.reservation import *
-from reservationApp.model.room import *
+from reservationApp.model.room.room import *
 import json
 
 class Reservation_app_error(Exception):
@@ -10,13 +10,12 @@ class Reservation_app_error(Exception):
 
 
 class Controller():
-
     def __init__(self):
+        self.rooms_manager = RoomsManager()
+        self.reservations_manager = ReservationsManager()
         self._clients : dict[str,Client] = {}
-        self._rooms : dict[str,Room] = {}
-        self._reservations : dict[str,Reservation] = {}
 
-    def load_data(self, file :str ) -> None:
+    def load_data(self, file :str ) -> None: # to model
         """Load the data from a json file """
         #TODO:try to load data with alternative constructors in clients rooms and reservations
         with open(file, "r", encoding="utf-8") as f:
@@ -28,7 +27,7 @@ class Controller():
                 self._clients[client_email] = client
 
             # Load rooms
-            for room_name, room_data in data["rooms"].items():
+            """for room_name, room_data in data["rooms"].items():
                 room = Room(room_data["name"], room_data["type"])
                 self._rooms[room_name] = room
                 # Load reservations for each room
@@ -44,18 +43,19 @@ class Controller():
                     reservation.id = reservation_data["id"]  # Set the UUID from the loaded data
                     room._reservations.append(reservation) # add the reservation to the room
                     self._reservations[reservation.id] = reservation # add the reservation to the controller
-            
+                    """
+            self.rooms_manager.add_rooms_from_json(data["rooms"], self.reservations_manager)
 
-    def data_to_dictionnary(self) -> dict [str,dict[str,dict]]:
+    def data_to_dictionnary(self) -> dict [str,dict[str,dict]]: # to model
         """Return the data in a dictionnary format"""
         clients = {client_id: client_data.to_dictionnary() for client_id, client_data in self._clients.items()}
-        rooms = {room_name: room_data.to_dictionnary() for room_name, room_data in self._rooms.items()}
+        rooms = self.rooms_manager.to_dictionnary()
         return  {
             "clients" : clients,
             "rooms" : rooms,
         }
 
-    def save_data(self, file ) -> None:
+    def save_data(self, file ) -> None: # to model
         """Save the data to a json file"""
         data = self.data_to_dictionnary()  # Convert all data to a dictionary
         with open(file, "w", encoding="utf-8") as f:
@@ -97,11 +97,11 @@ class Controller():
     
     def add_room(self, name : str, type : str) -> None:
         """Add a new room to the model"""
-        if name in self.rooms_name:
+        if self.rooms_manager.is_a_room(name):
             raise Reservation_app_error(f"Room {name} already exists")
         new_room = Room(name,type)
-        self._rooms[name] = new_room
-        pass
+        self.rooms_manager.add_room(new_room)
+
 
     def get_room_available_time_interval(self, room : Room, time_interval : timedelta) -> list:
         """Show all the available time interval for a room"""
@@ -118,20 +118,20 @@ class Controller():
 
     def add_reservation(self, room : str, time_interval : TimeInterval, client_email : str) -> Reservation:
         """Create a new reservation for a room"""
-        if room not in self._rooms:
+        if not self.rooms_manager.is_a_room(room):
             raise Reservation_app_error(f"Room {room} does not exist")
         
         if client_email not in self._clients:
             raise Reservation_app_error(f"Client {client_email} does not exist")
         
-        if not self._rooms[room].is_available(time_interval):
+        if not self.rooms_manager._rooms[room].is_available(time_interval):
             raise Reservation_app_error(f"Room {room} is not available for the time interval {time_interval}")
         
         if time_interval.start_time < datetime.today():
             raise Reservation_app_error(f"The start of the reservation has already passed")
         
-        new_reservation = self._rooms[room].create_reservations(time_interval,client_email)
-        self._reservations[new_reservation.id] = new_reservation
+        new_reservation = self.rooms_manager._rooms[room].create_reservations(time_interval,client_email)
+        self.reservations_manager.add_reservations(new_reservation)
         
 
 
@@ -144,7 +144,7 @@ if __name__ == "__main__":
 
 
 
-    
+    """
     controller = Controller()
     controller.add_client("Mael","Legoff", "mael@uha.fr")
     controller.add_client("Lou","Lemarechal" ,"lou@uha.fr")
@@ -154,13 +154,10 @@ if __name__ == "__main__":
     mael_uuid = controller.get_client_uuid("Mael")
     mael_uuid = controller.get_client_uuid("Mael")
     controller.add_reservation("Room1", TimeInterval(date(2026, 10, 1), time(12,30), timedelta(hours=1,minutes=10)), "mael@uha.fr")
-    print(controller.data_to_dictionnary())
-    controller.save_data("./src/data/test.json")
+    
+    controller.save_data("./data/test.json")
     controller2 = Controller()
-    controller2.load_data("./src/data/test.json")
-
-
-
-
-
+    controller2.load_data("./data/test.json")
+    print(controller2.data_to_dictionnary())"""
+ 
 

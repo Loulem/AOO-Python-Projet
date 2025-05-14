@@ -1,4 +1,4 @@
-from reservationApp.model.room import *
+from reservationApp.model.room.room import *
 
 def test_Room_str():
     room = Room("Room1", "Conference")
@@ -26,7 +26,7 @@ def test_Room_create_reservations():
     reservation = room.create_reservations(time_interval, client_id)
     
     assert len(room._reservations) == 1
-    assert room._reservations[0] == reservation
+    assert list(room._reservations.values())[0] == reservation
 
 
     

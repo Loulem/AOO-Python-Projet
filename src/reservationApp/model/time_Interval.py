@@ -1,3 +1,4 @@
+from __future__ import annotations
 from datetime import datetime, timedelta, date, time
 
 class TimeInterval():
@@ -9,7 +10,13 @@ class TimeInterval():
         self.duration = duration
 
     
-        
+    @classmethod
+    def from_json(cls, json_data:dict) -> TimeInterval:
+        """Create a time interval from a json data"""
+        start_day = date.fromisoformat(json_data["start_day"])
+        start_hour = time.fromisoformat(json_data["start_hour"])
+        duration = timedelta(hours = int(json_data["hours"]), minutes = int(json_data["minutes"]))
+        return cls(start_day,start_hour,duration)                                          
         
     def __str__(self) -> str:
         return f"{{start_time : {self.start_time}; end_time : {self.end_time}}}"

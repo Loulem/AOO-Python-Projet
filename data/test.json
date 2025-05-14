@@ -4,19 +4,19 @@
             "name": "Mael",
             "first_name": "Legoff",
             "email": "mael@uha.fr",
-            "uuid": "cf54f8ba-2892-4eee-9879-dcf6d430d7d6"
+            "uuid": "a276ddb0-af48-4d0b-bf51-094f629270a5"
         },
         "lou@uha.fr": {
             "name": "Lou",
             "first_name": "Lemarechal",
             "email": "lou@uha.fr",
-            "uuid": "b2d85bbd-4e38-4861-b2e4-2cfffaa764e1"
+            "uuid": "b8bcc2c2-e9d1-420f-bded-bdc5e0941e1b"
         },
         "paul@gmail.com": {
             "name": "Paul",
             "first_name": "tin",
             "email": "paul@gmail.com",
-            "uuid": "91018564-735a-42ab-aba9-d707eeddc2a2"
+            "uuid": "a79a1849-50bd-4e82-bdc7-0e3b617f52de"
         }
     },
     "rooms": {
@@ -25,7 +25,7 @@
             "type": "Conference",
             "reservations": [
                 {
-                    "id": "46e26ba0-159b-44f5-812d-7c0c1e4f153c",
+                    "id": "e4cbd938-14db-44e3-93a0-b3fa735cb291",
                     "name": "Room1",
                     "client_id": "mael@uha.fr",
                     "timeInterval": {
