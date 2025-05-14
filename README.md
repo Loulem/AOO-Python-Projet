@@ -6,4 +6,11 @@ L’application permettra un nombre de fonctionnalités qui seront décrite ci-d
     - Possibilité de réserver une salle libre sur des horaires à la minute près
     - Affichage des salle disponible sur une plage horaires
     - Affichage des créneaux libres ou occupés d’une salle 
+
+
+
+TODO 
+
+    ajouter des rooms manager client manager et reservations manager
+    mettre bcp de code dans le controller
     

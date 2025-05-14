@@ -6,6 +6,7 @@ class Room():
         self.name = name
         self.type = type
         self._reservations : list[Reservation] = [] # contient les objets réservations attribuer à la salle
+        #TODO : ajouter un attribut pour le nombre de places de la salle
         
         
     def create_reservations(self, time_interval : TimeInterval, client_id : str ) -> Reservation:
