@@ -1,8 +1,0 @@
-{'name': 'Room1', 'type': 'Conference', 'reservations': [
-        {'id': 'f18e11e0-fc2d-495f-a910-29a9b1ddc58d', 'name': 'Room1', 'client_id': 'mael@uha.fr', 'timeInterval': {'start_day': '2026-10-01', 'start_hour': '12: 30: 00', 'hours': '1', 'minutes': '10'
-            }
-        }
-    ]
-}
-{'name': 'Room2', 'type': 'Meeting', 'reservations': []
-}

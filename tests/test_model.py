@@ -34,13 +34,13 @@ def test_if_controller_Reservations_is_same_as_room_Reservation():
     controller.add_room("Room1", "Conference")
     tomorow = date.today() + timedelta(days=1)
     controller.add_reservation("Room1", TimeInterval(tomorow, time(12, 30), timedelta(hours=1, minutes=10)), "mael@uha.fr")
-    assert list(controller.rooms_manager._rooms["Room1"]._reservations.values())[0] == list(controller.reservations_manager._reservations.values())[0]
+    assert list(controller.rooms_manager.rooms["Room1"]._reservations.values())[0] == list(controller.reservations_manager.reservations.values())[0]
 
 def test_add_client_error():
     controller = Controller()
     controller.add_client("Mael", "Legoff", "Mael@uha.fr")
     with pytest.raises(Reservation_app_error):
-        controller.add_client("Mael", "Legoff", "et@uha.fr")
+        controller.add_client("Mael", "Legoff", "Mael@uha.fr")
 
 
 

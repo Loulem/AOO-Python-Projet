@@ -3,23 +3,23 @@ from reservationApp.model.reservation import *
 
 class RoomsManager():
     def __init__(self):
-        self._rooms : dict[str,Room] = {}
+        self.rooms : dict[str,Room] = {}
 
     
     def add_rooms_from_json(self, rooms_data : dict[str,dict[str,str]], reservations_manager : ReservationsManager) :
         """Create a room manager from a json data"""
         for room_name, room_data in rooms_data.items():
             room = Room.from_json(room_data, reservations_manager)
-            self._rooms[room_name] = room
+            self.rooms[room_name] = room
 
     def add_room(self, room : Room):
-        self._rooms[room.name] = room
+        self.rooms[room.name] = room
 
     def is_a_room(self,name : str)-> None:
-        return name in self._rooms.keys() 
+        return name in self.rooms.keys() 
 
     def to_dictionnary(self):
-        return {room_name: room_data.to_dictionnary() for room_name, room_data in self._rooms.items()} 
+        return {room_name: room_data.to_dictionnary() for room_name, room_data in self.rooms.items()} 
             
     
 

@@ -1,5 +1,5 @@
+from __future__ import annotations
 import uuid
-
 import re
 
 
@@ -8,6 +8,20 @@ class ClientError(Exception):
 
     pass
 
+class ClientManager():
+    def __init__(self):
+        self.clients : dict[str,Client] = {} 
+
+    def add_clients_from_json(self, json_data : dict[str,str]) -> None:
+        
+        for client_data in json_data.values():
+            self.clients[client_data["email"]] = Client.from_json(client_data)
+    def to_dictionnary(self):
+        return {client_id: client_data.to_dictionnary() for client_id, client_data in self.clients.items()}
+
+    def is_a_client(self,name : str) -> bool:
+        """Return true if it is an already register client"""
+        pass
 
 class Client():
     def __init__(self,name : str, first_name : str, email : str) -> None:
@@ -21,6 +35,7 @@ class Client():
     def email(self) -> str:
         """Return the email of the client"""
         return self._email
+    
     @email.setter
     def email(self, email : str) -> None:
         """Set the email of the client"""
@@ -28,6 +43,7 @@ class Client():
         if not(re.fullmatch(regex, email)):
             raise ClientError("Email must be in the format ____@___.__")
         self._email = email
+
     def __str__(self):
         return f"{{name : {self.name}, first name : {self.first_name}, email : {self._email}, id : {self.id}}}"
         
@@ -39,5 +55,10 @@ class Client():
             "email": self._email,
             "uuid": self.id
         }
+    @classmethod
+    def from_json(cls,json_data : dict[str,str]) -> Client:
+        client = cls(json_data["name"],json_data["first_name"],json_data["email"])
+        client.id = json_data["uuid"]
+        return client
 
 

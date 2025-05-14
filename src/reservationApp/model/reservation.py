@@ -4,19 +4,19 @@ import uuid
 
 class ReservationsManager():
     def __init__(self)-> None:
-        self._reservations : dict[str,Reservation] = {} # contient les objets réservations attribuer à la salle
+        self.reservations : dict[str,Reservation] = {} # contient les objets réservations attribuer à la salle
         
     def add_reservations_from_json(self, reservations_data : list[dict[str,str]])-> list[Reservation]:
         """Add reservations from json data"""
         room_reservations = {}
         for reservation_data in reservations_data:
             reservation = Reservation.from_json(reservation_data)
-            self._reservations[reservation.id] = reservation
+            self.reservations[reservation.id] = reservation
             room_reservations[reservation.id] = reservation
         return room_reservations
     
     def add_reservations(self, new_reservation : Reservation):
-        self._reservations[new_reservation.id] = new_reservation
+        self.reservations[new_reservation.id] = new_reservation
 
 
 
