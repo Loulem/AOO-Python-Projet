@@ -18,10 +18,9 @@ def test_Room_to_dictionnary():
 
 def test_Room_create_reservations():
     room = Room("Room1", "Conference")
-    start_day = datetime(2023, 10, 1)
-    start_hour = time(12, 30)
-    duration = timedelta(hours=1, minutes=10)
-    time_interval = TimeInterval(start_day, start_hour, duration)
+    start_datetime = datetime(2026, 10, 1,12,29)
+    end_datetime = datetime(2026, 10, 1,15,29)
+    time_interval = TimeInterval(start_datetime, end_datetime)
     client_id = str(uuid.uuid4())
     reservation = room.create_reservations(time_interval, client_id)
     

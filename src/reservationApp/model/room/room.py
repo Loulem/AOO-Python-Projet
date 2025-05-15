@@ -1,5 +1,7 @@
 from __future__ import annotations
-from reservationApp.model.reservation import *
+from reservationApp.model.reservation.reservation import *
+class RoomError(Exception):
+    pass
 
 class RoomsManager():
     def __init__(self):
@@ -12,16 +14,24 @@ class RoomsManager():
             room = Room.from_json(room_data, reservations_manager)
             self.rooms[room_name] = room
 
-    def add_room(self, room : Room):
-        self.rooms[room.name] = room
+    def add_room(self, name : str, type : str):
+        if self.is_a_room(name):
+            raise RoomError(f"Room {name} already exists")
+        new_room = Room(name,type)
+        self.rooms[name] = new_room
 
-    def is_a_room(self,name : str)-> None:
+
+    def is_a_room(self,name : str)-> bool:
         return name in self.rooms.keys() 
 
     def to_dictionnary(self):
         return {room_name: room_data.to_dictionnary() for room_name, room_data in self.rooms.items()} 
             
-    
+    @property
+    def rooms_name(self) -> list[str]:
+        """Get a list of rooms name"""
+        return [room.name for room in self.rooms.values()]
+
 
 class Room():
     def __init__(self,name : str ,type : str):
@@ -49,7 +59,7 @@ class Room():
     def is_available(self,time_interval:TimeInterval) -> bool:
         """Return true if the room is available during the time interval"""
         for reservation in self._reservations.values():
-           if reservation.overlap_with(time_interval.start_time, time_interval.end_time):
+           if reservation.overlap_with(time_interval.start_datetime, time_interval.end_datetime):
                 return False
         return True
 

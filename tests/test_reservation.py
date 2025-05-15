@@ -1,44 +1,43 @@
-from reservationApp.model.reservation import *
+from reservationApp.model.reservation.reservation import *
 from reservationApp.model.room.room import Room
 
 
 
 def test_reservation_str():
     room = Room("Room1", "Conference")
-    start_day = datetime(2025, 10, 1)
-    start_hour = time(12, 30)
-    duration = timedelta(hours=1, minutes=10)
-    time_interval = TimeInterval(start_day, start_hour, duration)
+    tomorow = datetime.today()
+    start_datetime = tomorow
+    end_datetime = tomorow+ timedelta(hours=1)
+    time_interval = TimeInterval(start_datetime, end_datetime)
     client_id = str(uuid.uuid4())
     reservation = Reservation(room.name, time_interval, client_id)
     print(reservation)
-    assert str(reservation) == f"{{id : {reservation.id}, room : {"Room1"}, client_id : {client_id}, time_interval : {{start_time : 2025-10-01 12:30:00; end_time : 2025-10-01 13:40:00}}}}"
+    assert str(reservation) == f"{{id : {reservation.id}, room : {"Room1"}, client_id : {client_id}, time_interval : {{start_time : {str(start_datetime)}; end_time : {str(end_datetime)}}}}}"
 
 def test_reservation_overlap():
     room = Room("Room1", "Conference")
-    start_day = datetime(2025, 10, 1)
-    start_hour = time(12, 30)
-    duration = timedelta(hours=1, minutes=10)
-    time_interval = TimeInterval(start_day, start_hour, duration)
+    tomorow = datetime.today()
+    start_datetime = tomorow
+    end_datetime = tomorow + timedelta(hours=1)
+    time_interval = TimeInterval(start_datetime, end_datetime)
     client_id = str(uuid.uuid4())
     reservation = Reservation(room.name, time_interval, client_id)
 
     # Test for a conflicting timeInterval
-    conflicting_start = datetime.combine(start_day, time(12, 0))
-    conflicting_end = datetime.combine(start_day, time(13, 0))
+    conflicting_start = tomorow - timedelta(hours=3)
+    conflicting_end = tomorow + timedelta(hours=4)
     assert reservation.overlap_with(conflicting_start, conflicting_end) == True
 
     # Test for a non-conflicting timeInterval
-    non_conflicting_start = datetime.combine(start_day, time(14, 0))
-    non_conflicting_end = datetime.combine(start_day, time(15, 0))
+    non_conflicting_start = tomorow - timedelta(hours=2)
+    non_conflicting_end = tomorow - timedelta(hours=1)
     assert reservation.overlap_with(non_conflicting_start, non_conflicting_end) == False
 
 def test_reservation_to_dictionnary():
     room = Room("Room1", "Conference")
-    start_day = datetime(2025, 10, 1)
-    start_hour = time(12, 30)
-    duration = timedelta(hours=1, minutes=10)
-    time_interval = TimeInterval(start_day, start_hour, duration)
+    start_datetime = datetime(2026, 10, 1,12,29)
+    end_datetime = datetime(2026, 10, 1,15,29)
+    time_interval = TimeInterval(start_datetime, end_datetime)
     client_id = str(uuid.uuid4())
     reservation = Reservation(room.name, time_interval, client_id)
 

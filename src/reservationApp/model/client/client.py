@@ -12,16 +12,38 @@ class ClientManager():
     def __init__(self):
         self.clients : dict[str,Client] = {} 
 
-    def add_clients_from_json(self, json_data : dict[str,str]) -> None:
+    def add_clients_from_json(self, json_data : dict[str,dict[str,str]]) -> None:
         
-        for client_data in json_data.values():
-            self.clients[client_data["email"]] = Client.from_json(client_data)
+        for client_email , client_data in json_data.items():
+            self.clients[client_email] = Client.from_json(client_data)
+
+    def add_client(self, name : str, first_name : str ,email : str) -> None :
+        if name in self.clients_name:
+            raise ClientError(f"Client {name} already exists")
+        if email in self.clients:
+            raise ClientError(f"There is already a client with the email : {email}")
+        new_client = Client(name,first_name,email)
+        self.clients[new_client._email] = new_client
+        
+    def get_clients_infos(self,email : str) -> dict:
+        return self.clients[email].to_dictionnary()
+    
+    @property
+    def clients_name(self) -> list[str]:
+        """Get a list of clients name"""
+        return [client.name for client in self.clients.values()]
+    
+    @property
+    def clients_email(self) -> list[str]:
+        """Get a list of clients email"""
+        return list(self.clients.keys())
+
     def to_dictionnary(self):
         return {client_id: client_data.to_dictionnary() for client_id, client_data in self.clients.items()}
 
-    def is_a_client(self,name : str) -> bool:
+    def is_a_client(self,email : str) -> bool:
         """Return true if it is an already register client"""
-        pass
+        return email in self.clients_email
 
 class Client():
     def __init__(self,name : str, first_name : str, email : str) -> None:
