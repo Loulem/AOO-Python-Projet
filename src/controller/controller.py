@@ -72,3 +72,11 @@ if __name__ == "__main__":
     controller2 = Controller()
     controller2.model.load_data("./data/test.json")
     print(controller2.model.clients_manager.clients_email[0])
+    t1 = datetime.today()
+    mael_name = controller.clients_manager.clients_name
+    controller.clients_manager.clients["mael@uha.fr"].name = "hello"
+    print(controller.clients_manager.clients_name)
+    print(mael_name)
+    t2 = t1 + timedelta(minutes=1)
+    print(t1 < t2)
+    print(t2)
