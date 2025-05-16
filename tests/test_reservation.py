@@ -4,7 +4,7 @@ from reservationApp.model.room.room import Room
 
 
 def test_reservation_str():
-    room = Room("Room1", "Conference")
+    room = Room("Room1", "Conference",12)
     tomorow = datetime.today()
     start_datetime = tomorow
     end_datetime = tomorow+ timedelta(hours=1)
@@ -15,7 +15,7 @@ def test_reservation_str():
     assert str(reservation) == f"{{id : {reservation.id}, room : {"Room1"}, client_id : {client_id}, time_interval : {{start_time : {str(start_datetime)}; end_time : {str(end_datetime)}}}}}"
 
 def test_reservation_overlap():
-    room = Room("Room1", "Conference")
+    room = Room("Room1", "Conference",12)
     tomorow = datetime.today()
     start_datetime = tomorow
     end_datetime = tomorow + timedelta(hours=1)
@@ -34,7 +34,7 @@ def test_reservation_overlap():
     assert reservation.overlap_with(non_conflicting_start, non_conflicting_end) == False
 
 def test_reservation_to_dictionnary():
-    room = Room("Room1", "Conference")
+    room = Room("Room1", "Conference",12)
     start_datetime = datetime(2026, 10, 1,12,29)
     end_datetime = datetime(2026, 10, 1,15,29)
     time_interval = TimeInterval(start_datetime, end_datetime)

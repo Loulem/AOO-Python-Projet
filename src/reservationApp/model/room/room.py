@@ -17,7 +17,7 @@ class RoomsManager():
     def add_room(self, name : str, type : str):
         if self.is_a_room(name):
             raise RoomError(f"Room {name} already exists")
-        new_room = Room(name,type)
+        new_room = Room(name,type,12)
         self.rooms[name] = new_room
 
 
@@ -34,18 +34,19 @@ class RoomsManager():
 
 
 class Room():
-    def __init__(self,name : str ,type : str):
+    def __init__(self,name : str ,type : str, capacity):
         self.name = name
         self.type = type
-        self._reservations : dict[str,Reservation] = {} # contient les objets réservations attribuer à la salle
-        #TODO : ajouter un attribut pour le nombre de places de la salle
+        self._reservations : dict[str,Reservation] = {} 
+        self.capacity = capacity
         
     @classmethod
     def from_json(cls, json_data:dict, reservations_manager : ReservationsManager)-> Room:
         """Create a room from a json data"""
         name = json_data["name"]
         type = json_data["type"]
-        room = cls(name, type)
+        capacity = json_data["capacity"]
+        room = cls(name, type,capacity)
         room._reservations = reservations_manager.add_reservations_from_json(json_data["reservations"])
         return room
 
@@ -67,12 +68,13 @@ class Room():
         return {
             "name": self.name,
             "type": self.type,
+            "capacity": self.capacity,
             "reservations": [reservation.to_dictionnary() for reservation in self._reservations.values()] 
             
             
         }
     def __str__(self) -> str:
-        return f"{{name : {self.name}, type : {self.type}}}"
+        return f"{{name : {self.name}, type : {self.type}, capacity : {self.capacity}}}"
 
 
 

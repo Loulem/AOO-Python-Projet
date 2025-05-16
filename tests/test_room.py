@@ -1,23 +1,24 @@
 from reservationApp.model.room.room import *
 
 def test_Room_str():
-    room = Room("Room1", "Conference")
-    assert str(room) == f"{{name : Room1, type : Conference}}"
+    room = Room("Room1", "Conference",12)
+    assert str(room) == f"{{name : Room1, type : Conference, capacity : 12}}"
     # Test if the string representation of the room is correct
 
 def test_Room_to_dictionnary():
-    room = Room("Room1", "Conference")
+    room = Room("Room1", "Conference",12)
     room_dict = room.to_dictionnary()
     assert room_dict == {
         "name": "Room1",
         "type": "Conference",
+        "capacity": 12,
         "reservations": [],
     }
     # Test if the dictionary representation of the room is correct
 
 
 def test_Room_create_reservations():
-    room = Room("Room1", "Conference")
+    room = Room("Room1", "Conference",12)
     start_datetime = datetime(2026, 10, 1,12,29)
     end_datetime = datetime(2026, 10, 1,15,29)
     time_interval = TimeInterval(start_datetime, end_datetime)
