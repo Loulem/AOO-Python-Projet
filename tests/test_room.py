@@ -24,10 +24,9 @@ def test_Room_create_reservations():
     time_interval = TimeInterval(start_datetime, end_datetime)
     client_id = str(uuid.uuid4())
     reservation = room.create_reservations(time_interval, client_id)
-    
     assert len(room._reservations) == 1
     assert list(room._reservations.values())[0] == reservation
-
+    
 
     
 
