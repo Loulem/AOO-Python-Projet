@@ -1,290 +1,293 @@
 from tkinter import *
+from reservationApp import *
+
+class View():
+    def __init__(self,controller : Controller):    
+        self.controller = controller
+        self.root = Tk()
+        self.root.title("MeetingPro")
+        self.root.geometry("1080x720")
+        self.root.minsize(480, 360)
+        self.root.iconbitmap("src/MeetingPro.ico")
+        # create a menu bar
+        self.my_menu = Menu(self.root)
+        self.root.config(menu=self.my_menu)
+        self.file_menu = Menu(self.my_menu)
+        self.my_menu.add_checkbutton(label="accueil", command=self.main_menu)
+        self.my_menu.add_checkbutton(label="ajouter", command=self.add_menu)
+        self.my_menu.add_checkbutton(label="réserver", command=self.reserve_menu)
+        self.my_menu.add_checkbutton(label="afficher", command=self.show_menu)
+
+        # create menu
+        self.main_frame = Frame(self.root, bg="white")
+        self.add_frame = Frame(self.root, bg="white")
+        self.show_frame = Frame(self.root, bg="white")
+        self.reserve_frame = Frame(self.root, bg="white")
+        self.new_client_frame = Frame(self.root, bg="white")
+        self.new_room_frame = Frame(self.root, bg="white")
+        self.show_list_of_rooms_frame = Frame(self.root, bg="white")
+        self.reservation_frame = Frame(self.root, bg="white")
+        self.room_available_for_time_slot_frame = Frame(self.root, bg="white")
+        self.choose_room_frame = Frame(self.root, bg="white")
+        self.validation_of_reservation_frame = Frame(self.root, bg="white")
+        self.main_menu()
+        self.root.mainloop()
 
 
-root = Tk()
-root.title("MeetingPro")
-root.geometry("1080x720")
-root.minsize(480, 360)
-root.iconbitmap("src/MeetingPro.ico")
+    
 
 
 # change menu
-def main_menu():
-    hide_all()
-    main_frame.pack(fill="both", expand=1)
-    add_button = Button(main_frame, text="Ajouter", command=add_menu)
-    show_button = Button(main_frame, text="Afficher", command=show_menu)
-    book_button = Button(main_frame, text="Réserver", command=reserve_menu)
-    add_button.pack()
-    show_button.pack()
-    book_button.pack()
+    def main_menu(self):
+        self.hide_all()
+        self.main_frame.pack(fill="both", expand=1)
+        add_button = Button(self.main_frame, text="Ajouter", command=self.add_menu)
+        show_button = Button(self.main_frame, text="Afficher", command=self.show_menu)
+        book_button = Button(self.main_frame, text="Réserver", command=self.reserve_menu)
+        add_button.pack()
+        show_button.pack()
+        book_button.pack()
 
-def add_menu():
-    hide_all()
-    add_frame.pack(fill="both", expand=1)
-    add_new_client_button = Button(add_frame, text="Ajouter un client", command=new_client_menu)
-    add_new_client_button.pack()
-    add_new_room_button = Button(add_frame, text="Ajouter une salle", command=new_room_menu)
-    add_new_room_button.pack()
+    def add_menu(self):
+        self.hide_all()
+        self.add_frame.pack(fill="both", expand=1)
+        add_new_client_button = Button(self.add_frame, text="Ajouter un client", command=self.new_client_menu)
+        add_new_client_button.pack()
+        add_new_room_button = Button(self.add_frame, text="Ajouter une salle", command=self.new_room_menu)
+        add_new_room_button.pack()
 
-def new_client_menu():
-    hide_all()
-    new_client_frame.pack(fill="both", expand=1)
-    new_client_label = Label(new_client_frame, text="Ajouter un client")
-    new_client_label.pack()
-    new_client_name_entry = Entry(new_client_frame)
-    new_client_name_entry.insert(0, "Prénom")
-    new_client_name_entry.pack()
-    new_client_surname_entry = Entry(new_client_frame)
-    new_client_surname_entry.insert(0, "Nom de famille")
-    new_client_surname_entry.pack()
-    new_client_email_entry = Entry(new_client_frame)
-    new_client_email_entry.insert(0, "Email")
-    new_client_email_entry.pack()
-    validation_button = Button(new_client_frame, text="valider", command=main_menu)
-    validation_button.pack()
-    cancel_button = Button(new_client_frame, text="Annuler", command=add_menu)
-    cancel_button.pack()
+    def new_client_menu(self):
+        self.hide_all()
+        self.new_client_frame.pack(fill="both", expand=1)
+        new_client_label = Label(self.new_client_frame, text="Ajouter un client")
+        new_client_label.pack()
+        new_client_name_entry = Entry(self.new_client_frame)
+        new_client_name_entry.insert(0, "Prénom")
+        new_client_name_entry.pack()
+        new_client_surname_entry = Entry(self.new_client_frame)
+        new_client_surname_entry.insert(0, "Nom de famille")
+        new_client_surname_entry.pack()
+        new_client_email_entry = Entry(self.new_client_frame)
+        new_client_email_entry.insert(0, "Email")
+        new_client_email_entry.pack()
+        validation_button = Button(self.new_client_frame, text="valider", command= lambda : self.controller.add_client(new_client_name_entry.get(),new_client_surname_entry.get(),new_client_email_entry.get()))
+        validation_button.pack()
+        cancel_button = Button(self.new_client_frame, text="Annuler", command=self.add_menu)
+        cancel_button.pack()
 
-def new_room_menu():
-    hide_all()
-    new_room_frame.pack(fill="both", expand=1)
-    new_room_label = Label(new_room_frame, text="Ajouter une nouvelle salle")
-    new_room_label.pack()
+    def new_room_menu(self):
+        self.hide_all()
+        self.new_room_frame.pack(fill="both", expand=1)
+        new_room_label = Label(self.new_room_frame, text="Ajouter une nouvelle salle")
+        new_room_label.pack()
+        var = StringVar()
+        new_room_name_entry = Entry(self.new_room_frame, text="Nom de la salle")
+        new_room_name_entry.pack()
 
-    new_room_name_entry = Entry(new_room_frame, text="Nom de la salle")
-    new_room_name_entry.pack()
+        capacity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        capacity_list = StringVar()
+        capacity_list.set(str(capacity[0]))  # Set default value
+        new_room_capacity = OptionMenu(self.new_room_frame, capacity_list, str(*capacity))
+        new_room_capacity.pack()
 
-    capacity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    capacity_list = StringVar()
-    capacity_list.set(capacity[0])  # Set default value
-    new_room_capacity = OptionMenu(new_room_frame, capacity_list, *capacity)
-    new_room_capacity.pack()
+        type_of_room = ["Salle de réunion", "Salle de conférence", "Bureau"]
+        type_of_room_list = StringVar()
+        type_of_room_list.set(type_of_room[0])  # Set default value
+        new_room_type = OptionMenu(self.new_room_frame, type_of_room_list, *type_of_room)
+        new_room_type.pack()
 
-    type_of_room = ["Salle de réunion", "Salle de conférence", "Bureau"]
-    type_of_room_list = StringVar()
-    type_of_room_list.set(type_of_room[0])  # Set default value
-    new_room_type = OptionMenu(new_room_frame, type_of_room_list, *type_of_room)
-    new_room_type.pack()
+        validation_button = Button(self.new_room_frame, text="valider", command=self.main_menu)
+        validation_button.pack()
+        cancel_button = Button(self.new_room_frame, text="Annuler", command=self.add_menu)
+        cancel_button.pack()
 
-    validation_button = Button(new_room_frame, text="valider", command=main_menu)
-    validation_button.pack()
-    cancel_button = Button(new_room_frame, text="Annuler", command=add_menu)
-    cancel_button.pack()
+    def show_menu(self):
+        self.hide_all()
+        self.show_frame.pack(fill="both", expand=1)
+        show_list_of_rooms_button = Button(self.show_frame, text="Afficher la liste des salles", command=self.show_list_of_rooms)
+        show_list_of_rooms_button.pack()
+        show_list_of_clients_button = Button(self.show_frame, text="Afficher la liste des clients")
+        show_list_of_clients_button.pack()
+        show_rooms_for_time_slot_button = Button(self.show_frame, text="Afficher les salles disponibles pour un créneau",command=self.room_available_for_time_slot_menu)
+        show_rooms_for_time_slot_button.pack()
+        show_book_of_clients_button = Button(self.show_frame, text="Afficher les reservation d'un clients", command=self.reservation_menu)
+        show_book_of_clients_button.pack()
 
-def show_menu():
-    hide_all()
-    show_frame.pack(fill="both", expand=1)
-    show_list_of_rooms_button = Button(show_frame, text="Afficher la liste des salles", command=show_list_of_rooms)
-    show_list_of_rooms_button.pack()
-    show_list_of_clients_button = Button(show_frame, text="Afficher la liste des clients")
-    show_list_of_clients_button.pack()
-    show_rooms_for_time_slot_button = Button(show_frame, text="Afficher les salles disponibles pour un créneau",command=room_available_for_time_slot_menu)
-    show_rooms_for_time_slot_button.pack()
-    show_book_of_clients_button = Button(show_frame, text="Afficher les reservation d'un clients", command=reservation_menu)
-    show_book_of_clients_button.pack()
+    def reservation_menu(self):
+        self.hide_all()
+        self.reservation_frame.pack(fill="both", expand=1)
+        reservation_label = Label(self.reservation_frame, text="Réservation du client")
+        reservation_label.pack()
+        client_label = Label(self.reservation_frame, text="Client:")
+        client_label.pack()
+        client =["Client 1", "Client 2", "Client 3", "Client 4", "Client 5"]
+        client_list= StringVar()
+        client_list.set(client[0])  # Set default value
+        client_option_menu = OptionMenu(self.reservation_frame, client_list, *client)
+        client_option_menu.pack()
+        validation_button = Button(self.reservation_frame, text="valider", command=self.main_menu)
+        validation_button.pack()
+        cancel_button = Button(self.reservation_frame, text="Annuler", command=self.show_menu)
+        cancel_button.pack()
 
-def reservation_menu():
-    hide_all()
-    reservation_frame.pack(fill="both", expand=1)
-    reservation_label = Label(reservation_frame, text="Réservation du client")
-    reservation_label.pack()
-    client_label = Label(reservation_frame, text="Client:")
-    client_label.pack()
-    client =["Client 1", "Client 2", "Client 3", "Client 4", "Client 5"]
-    client_list= StringVar()
-    client_list.set(client[0])  # Set default value
-    client_option_menu = OptionMenu(reservation_frame, client_list, *client)
-    client_option_menu.pack()
-    validation_button = Button(reservation_frame, text="valider", command=main_menu)
-    validation_button.pack()
-    cancel_button = Button(reservation_frame, text="Annuler", command=show_menu)
-    cancel_button.pack()
-
-def room_available_for_time_slot_menu():
-    hide_all()
-    room_available_for_time_slot_frame.pack(fill="both", expand=1)
-    room_available_for_time_slot_label = Label(room_available_for_time_slot_frame, text="Salles disponibles pour le créneau")
-    room_available_for_time_slot_label.pack()
-    begin_label = Label(room_available_for_time_slot_frame, text="Début:")
-    begin_label.pack()
-    date_of_beginning_entry = Entry(room_available_for_time_slot_frame)
-    date_of_beginning_entry.insert(0, "Date de début")
-    date_of_beginning_entry.pack()
-    end_label = Label(room_available_for_time_slot_frame, text="Fin:")
-    end_label.pack()
-    date_of_ending_entry = Entry(room_available_for_time_slot_frame)
-    date_of_ending_entry.insert(0, "Date de fin")
-    date_of_ending_entry.pack()
-    validation_button = Button(room_available_for_time_slot_frame, text="valider", command=main_menu)
-    validation_button.pack()
-    cancel_button = Button(room_available_for_time_slot_frame, text="Annuler", command=show_menu)
-    cancel_button.pack()
-  
-
-def show_list_of_rooms():
-    hide_all()
-    show_frame.pack(fill="both", expand=1)
-    show_list_of_rooms_label = Label(show_frame, text="Liste des salles")
-    show_list_of_rooms_label.pack()
-    listbox = Listbox(show_frame)
-    listbox.pack(fill="both", expand=1)
-    # add a scrollbar
-    scrollbar = Scrollbar(show_frame)
-    scrollbar.pack(side="right", fill="y")
-    listbox.config(yscrollcommand=scrollbar.set)
-    scrollbar.config(command=listbox.yview)
-    # add some items to the listbox
-    for i in range(100):
-        listbox.insert(END, "Salle " + str(i))
-
-def reserve_menu():
-    hide_all()
-    reserve_frame.pack(fill="both", expand=1)
-    reserve_label = Label(reserve_frame, text="Réserver une salle")
-    reserve_label.pack()
-    begin_label = Label(reserve_frame, text="Début:")
-    begin_label.pack()
-    date_of_beginning_entry = Entry(reserve_frame)
-    date_of_beginning_entry.insert(0, "Date de début")
-    date_of_beginning_entry.pack()
-    end_label = Label(reserve_frame, text="Fin:")
-    end_label.pack()
-    date_of_ending_entry = Entry(reserve_frame)
-    date_of_ending_entry.insert(0, "Date de fin")
-    date_of_ending_entry.pack()
-    client_label = Label(reserve_frame, text="Client:")
-    client_label.pack()
-    client =["Client 1", "Client 2", "Client 3", "Client 4", "Client 5"] # a modifier pour recuperer la liste des clients
-    client_list= StringVar()
-    client_list.set(client[0])  # Set default value
-    client_option_menu = OptionMenu(reserve_frame, client_list, *client)
-    client_option_menu.pack()
-    type_of_room_label = Label(reserve_frame, text="Type:")
-    type_of_room_label.pack()
-    validation_button = Button(reserve_frame, text="Valider", command=lambda: choose_room_menu(client_list, date_of_beginning_entry.get(), date_of_ending_entry.get()))
-    validation_button.pack()
-    cancel_button = Button(reserve_frame, text="Annuler", command=choose_room_menu)
-    cancel_button.pack()
+    def room_available_for_time_slot_menu(self):
+        self.hide_all()
+        self.room_available_for_time_slot_frame.pack(fill="both", expand=1)
+        room_available_for_time_slot_label = Label(self.room_available_for_time_slot_frame, text="Salles disponibles pour le créneau")
+        room_available_for_time_slot_label.pack()
+        begin_label = Label(self.room_available_for_time_slot_frame, text="Début:")
+        begin_label.pack()
+        date_of_beginning_entry = Entry(self.room_available_for_time_slot_frame)
+        date_of_beginning_entry.insert(0, "Date de début")
+        date_of_beginning_entry.pack()
+        end_label = Label(self.room_available_for_time_slot_frame, text="Fin:")
+        end_label.pack()
+        date_of_ending_entry = Entry(self.room_available_for_time_slot_frame)
+        date_of_ending_entry.insert(0, "Date de fin")
+        date_of_ending_entry.pack()
+        validation_button = Button(self.room_available_for_time_slot_frame, text="valider", command=self.main_menu)
+        validation_button.pack()
+        cancel_button = Button(self.room_available_for_time_slot_frame, text="Annuler", command=self.show_menu)
+        cancel_button.pack()
     
-def choose_room_menu(client_list_var : StringVar, date_of_beginning_variable : StringVar, date_of_ending_variable : StringVar):
-    hide_all()
-    choose_room_frame.pack(fill="both", expand=1)
-    choose_room_label = Label(choose_room_frame, text="Reserver une salle")
-    choose_room_label.pack()
-    client_label = Label(choose_room_frame, text=f"Client : {client_list_var.get()}")
-    client_label.pack()
-    begin_label = Label(choose_room_frame, text=f"Début:{date_of_beginning_variable}")
-    begin_label.pack()
-    end_label = Label(choose_room_frame, text=f"Fin:{date_of_ending_variable}")
-    end_label.pack()
-    duration_label = Label(choose_room_frame, text=f"Durée:{date_of_ending_variable} - {date_of_beginning_variable}")
-    duration_label.pack()
-    room_available_labbel = Label(choose_room_frame, text="Salles disponibles:")
-    room_available_labbel.pack()
-    room_list = ["Salle 1", "Salle 2", "Salle 3", "Salle 4", "Salle 5"]
-    room_list_var = StringVar()
-    room_list_var.set(room_list[0])  # Set default value
-    room_option_menu = OptionMenu(choose_room_frame, room_list_var, *room_list)
-    room_option_menu.pack()
-    type_label = Label(choose_room_frame, text="Type de salle:")
-    type_label.pack()
-    type_of_room_standart_checkbutton = Checkbutton(choose_room_frame, text="Standart")
-    type_of_room_standart_checkbutton.pack()
-    type_of_room_conference_checkbutton = Checkbutton(choose_room_frame, text="Conférence")
-    type_of_room_conference_checkbutton.pack()
-    type_of_room_computeur_science_checkbutton= Checkbutton(choose_room_frame, text="Informatique")
-    type_of_room_computeur_science_checkbutton.pack()
-    validation_button = Button(choose_room_frame, text="valider", command=lambda :validation_of_reservation_menu(client_list_var, date_of_beginning_variable, date_of_ending_variable, room_list_var))
-    validation_button.pack()
-    cancel_button = Button(choose_room_frame, text="Annuler", command=reserve_menu)
-    cancel_button.pack()
 
-def validation_of_reservation_menu(client_list_var : StringVar, date_of_beginning_variable : StringVar, date_of_ending_variable : StringVar, room_list_var : StringVar):
-    hide_all()
-    validation_of_reservation_frame.pack(fill="both", expand=1)
-    validation_of_reservation_label = Label(validation_of_reservation_frame, text="Réservation Validée!")
-    validation_of_reservation_label.pack()
-    client_label = Label(validation_of_reservation_frame, text=f"Client: {client_list_var.get()}")
-    client_label.pack()
-    begining_label = Label(validation_of_reservation_frame, text=f"Début: {date_of_beginning_variable}")
-    begining_label.pack()
-    ending_label = Label(validation_of_reservation_frame, text=f"Fin: {date_of_ending_variable}")
-    ending_label.pack()
-    duration_label = Label(validation_of_reservation_frame, text=f"Durée: {date_of_ending_variable} - {date_of_beginning_variable}")
-    duration_label.pack()
-    room_label = Label(validation_of_reservation_frame, text=f"Salle: {room_list_var.get()}")
-    room_label.pack()
-    type_of_room_label = Label(validation_of_reservation_frame, text="Type de salle: ")
-    type_of_room_label.pack()
-    capacity_label = Label(validation_of_reservation_frame, text="Capacité: ")
-    capacity_label.pack()
-    reservation_details_label = Label(validation_of_reservation_frame, text="Détails de la réservation")
-    reservation_details_label.pack()
-    main_menu_button = Button(validation_of_reservation_frame, text="menu principal", command=main_menu)
-    main_menu_button.pack()
+    def show_list_of_rooms(self):
+        self.hide_all()
+        self.show_frame.pack(fill="both", expand=1)
+        show_list_of_rooms_label = Label(self.show_frame, text="Liste des salles")
+        show_list_of_rooms_label.pack()
+        listbox = Listbox(self.show_frame)
+        listbox.pack(fill="both", expand=1)
+        # add a scrollbar
+        scrollbar = Scrollbar(self.show_frame)
+        scrollbar.pack(side="right", fill="y")
+        listbox.config(yscrollcommand=scrollbar.set)
+        scrollbar.config(command=listbox.yview)
+        # add some items to the listbox
+        for i in range(100):
+            listbox.insert(END, "Salle " + str(i))
 
-# hide all frames
-def hide_all():
-    # destroy all widgets in the main frame
-    for widget in main_frame.winfo_children():
-        widget.destroy()
-    for widget in add_frame.winfo_children():
-        widget.destroy()
-    for widget in show_frame.winfo_children():
-        widget.destroy()
-    for widget in reserve_frame.winfo_children():
-        widget.destroy()
-    for widget in new_client_frame.winfo_children():
-        widget.destroy()
-    for widget in new_room_frame.winfo_children():
-        widget.destroy()
-    for widget in show_list_of_rooms_frame.winfo_children():
-        widget.destroy()
-    for widget in reservation_frame.winfo_children():
-        widget.destroy()
-    for widget in room_available_for_time_slot_frame.winfo_children():
-        widget.destroy()
-    for widget in choose_room_frame.winfo_children():
-        widget.destroy()
-    for widget in validation_of_reservation_frame.winfo_children():
-        widget.destroy()
+    def reserve_menu(self):
+        self.hide_all()
+        self.reserve_frame.pack(fill="both", expand=1)
+        reserve_label = Label(self.reserve_frame, text="Réserver une salle")
+        reserve_label.pack()
+        begin_label = Label(self.reserve_frame, text="Début:")
+        begin_label.pack()
+        date_of_beginning_entry = Entry(self.reserve_frame)
+        date_of_beginning_entry.insert(0, "Date de début")
+        date_of_beginning_entry.pack()
+        end_label = Label(self.reserve_frame, text="Fin:")
+        end_label.pack()
+        date_of_ending_entry = Entry(self.reserve_frame)
+        date_of_ending_entry.insert(0, "Date de fin")
+        date_of_ending_entry.pack()
+        client_label = Label(self.reserve_frame, text="Client:")
+        client_label.pack()
+        client =["Client 1", "Client 2", "Client 3", "Client 4", "Client 5"] # a modifier pour recuperer la liste des clients
+        client_list= StringVar()
+        client_list.set(client[0])  # Set default value
+        client_option_menu = OptionMenu(self.reserve_frame, client_list, *client)
+        client_option_menu.pack()
+        type_of_room_label = Label(self.reserve_frame, text="Type:")
+        type_of_room_label.pack()
+        validation_button = Button(self.reserve_frame, text="Valider", command=lambda: self.choose_room_menu(client_list, date_of_beginning_entry.get(), date_of_ending_entry.get()))
+        validation_button.pack()
+        cancel_button = Button(self.reserve_frame, text="Annuler", command=lambda: self.choose_room_menu)
+        cancel_button.pack()
+        
+    def choose_room_menu(self,client_list_var : StringVar, date_of_beginning_variable : StringVar, date_of_ending_variable : StringVar):
+        self.hide_all()
+        self.choose_room_frame.pack(fill="both", expand=1)
+        choose_room_label = Label(self.choose_room_frame, text="Reserver une salle")
+        choose_room_label.pack()
+        client_label = Label(self.choose_room_frame, text=f"Client : {client_list_var.get()}")
+        client_label.pack()
+        begin_label = Label(self.choose_room_frame, text=f"Début:{date_of_beginning_variable}")
+        begin_label.pack()
+        end_label = Label(self.choose_room_frame, text=f"Fin:{date_of_ending_variable}")
+        end_label.pack()
+        duration_label = Label(self.choose_room_frame, text=f"Durée:{date_of_ending_variable} - {date_of_beginning_variable}")
+        duration_label.pack()
+        room_available_labbel = Label(self.choose_room_frame, text="Salles disponibles:")
+        room_available_labbel.pack()
+        room_list = ["Salle 1", "Salle 2", "Salle 3", "Salle 4", "Salle 5"]
+        room_list_var = StringVar()
+        room_list_var.set(room_list[0])  # Set default value
+        room_option_menu = OptionMenu(self.choose_room_frame, room_list_var, *room_list)
+        room_option_menu.pack()
+        type_label = Label(self.choose_room_frame, text="Type de salle:")
+        type_label.pack()
+        type_of_room_standart_checkbutton = Checkbutton(self.choose_room_frame, text="Standart")
+        type_of_room_standart_checkbutton.pack()
+        type_of_room_conference_checkbutton = Checkbutton(self.choose_room_frame, text="Conférence")
+        type_of_room_conference_checkbutton.pack()
+        type_of_room_computeur_science_checkbutton= Checkbutton(self.choose_room_frame, text="Informatique")
+        type_of_room_computeur_science_checkbutton.pack()
+        validation_button = Button(self.choose_room_frame, text="valider", command=lambda :self.validation_of_reservation_menu(client_list_var, date_of_beginning_variable, date_of_ending_variable, room_list_var))
+        validation_button.pack()
+        cancel_button = Button(self.choose_room_frame, text="Annuler", command=self.reserve_menu)
+        cancel_button.pack()
+
+    def validation_of_reservation_menu(self,client_list_var : StringVar, date_of_beginning_variable : StringVar, date_of_ending_variable : StringVar, room_list_var : StringVar):
+        self.hide_all()
+        self.validation_of_reservation_frame.pack(fill="both", expand=1)
+        validation_of_reservation_label = Label(self.validation_of_reservation_frame, text="Réservation Validée!")
+        validation_of_reservation_label.pack()
+        client_label = Label(self.validation_of_reservation_frame, text=f"Client: {client_list_var.get()}")
+        client_label.pack()
+        begining_label = Label(self.validation_of_reservation_frame, text=f"Début: {date_of_beginning_variable}")
+        begining_label.pack()
+        ending_label = Label(self.validation_of_reservation_frame, text=f"Fin: {date_of_ending_variable}")
+        ending_label.pack()
+        duration_label = Label(self.validation_of_reservation_frame, text=f"Durée: {date_of_ending_variable} - {date_of_beginning_variable}")
+        duration_label.pack()
+        room_label = Label(self.validation_of_reservation_frame, text=f"Salle: {room_list_var.get()}")
+        room_label.pack()
+        type_of_room_label = Label(self.validation_of_reservation_frame, text="Type de salle: ")
+        type_of_room_label.pack()
+        capacity_label = Label(self.validation_of_reservation_frame, text="Capacité: ")
+        capacity_label.pack()
+        reservation_details_label = Label(self.validation_of_reservation_frame, text="Détails de la réservation")
+        reservation_details_label.pack()
+        main_menu_button = Button(self.validation_of_reservation_frame, text="menu principal", command=self.main_menu)
+        main_menu_button.pack()
 
     # hide all frames
-    new_client_frame.pack_forget()
-    new_room_frame.pack_forget()
-    main_frame.pack_forget()
-    add_frame.pack_forget()
-    show_frame.pack_forget()
-    reserve_frame.pack_forget()
-    show_list_of_rooms_frame.pack_forget()
-    reservation_frame.pack_forget()
-    room_available_for_time_slot_frame.pack_forget()
-    choose_room_frame.pack_forget()
-    validation_of_reservation_frame.pack_forget()
+    def hide_all(self):
+    # destroy all widgets in the main frame
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
+        for widget in self.add_frame.winfo_children():
+            widget.destroy()
+        for widget in self.show_frame.winfo_children():
+            widget.destroy()
+        for widget in self.reserve_frame.winfo_children():
+            widget.destroy()
+        for widget in self.new_client_frame.winfo_children():
+            widget.destroy()
+        for widget in self.new_room_frame.winfo_children():
+            widget.destroy()
+        for widget in self.show_list_of_rooms_frame.winfo_children():
+            widget.destroy()
+        for widget in self.reservation_frame.winfo_children():
+            widget.destroy()
+        for widget in self.room_available_for_time_slot_frame.winfo_children():
+            widget.destroy()
+        for widget in self.choose_room_frame.winfo_children():
+            widget.destroy()
+        for widget in self.validation_of_reservation_frame.winfo_children():
+            widget.destroy()
 
-
-# create a menu bar
-my_menu = Menu(root)
-root.config(menu=my_menu)
-file_menu = Menu(my_menu)
-my_menu.add_checkbutton(label="accueil", command=main_menu)
-my_menu.add_checkbutton(label="ajouter", command=add_menu)
-my_menu.add_checkbutton(label="réserver", command=reserve_menu)
-my_menu.add_checkbutton(label="afficher", command=show_menu)
-
-# create menu
-main_frame = Frame(root, bg="white")
-add_frame = Frame(root, bg="white")
-show_frame = Frame(root, bg="white")
-reserve_frame = Frame(root, bg="white")
-new_client_frame = Frame(root, bg="white")
-new_room_frame = Frame(root, bg="white")
-show_list_of_rooms_frame = Frame(root, bg="white")
-reservation_frame = Frame(root, bg="white")
-room_available_for_time_slot_frame = Frame(root, bg="white")
-choose_room_frame = Frame(root, bg="white")
-validation_of_reservation_frame = Frame(root, bg="white")
-main_menu()
-
-root.mainloop()
+        # hide all frames
+        self.new_client_frame.pack_forget()
+        self.new_room_frame.pack_forget()
+        self.main_frame.pack_forget()
+        self.add_frame.pack_forget()
+        self.show_frame.pack_forget()
+        self.reserve_frame.pack_forget()
+        self.show_list_of_rooms_frame.pack_forget()
+        self.reservation_frame.pack_forget()
+        self.room_available_for_time_slot_frame.pack_forget()
+        self.choose_room_frame.pack_forget()
+        self.validation_of_reservation_frame.pack_forget()
