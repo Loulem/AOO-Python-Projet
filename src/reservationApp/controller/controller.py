@@ -1,6 +1,6 @@
 from __future__ import annotations # if some class use type defined later 
 from reservationApp.model.model import *
-from reservationApp
+from reservationApp.view import *
 
 class Reservation_app_error(Exception):
     """Base class for all exceptions raised by the reservation app"""
