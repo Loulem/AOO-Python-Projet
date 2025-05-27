@@ -1,5 +1,5 @@
 from tkinter import *
-from reservationApp import *
+
 
 class View():
     def __init__(self,controller : Controller):    
