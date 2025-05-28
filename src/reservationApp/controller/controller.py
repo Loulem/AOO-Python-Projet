@@ -1,6 +1,6 @@
 from __future__ import annotations # if some class use type defined later 
 from reservationApp.model.model import *
-from reservationApp.view import *
+from reservationApp.view import View
 
 class Reservation_app_error(Exception):
     """Base class for all exceptions raised by the reservation app"""
@@ -13,14 +13,26 @@ class Controller():
         self.reservations_manager = ReservationsManager()
         self.clients_manager = ClientManager()
         self.model = Model(self.rooms_manager,self.reservations_manager,self.clients_manager)
+        self.view = None
+
+    def start_view(self):
+        """Start the view"""
         self.view = View(self)
+        self.view.main()
+
     def add_client(self, name : str, first_name : str ,email : str) -> None :
         """Add a new client to the model"""
-        self.clients_manager.add_client( name , first_name ,email )
+        try:
+            self.clients_manager.add_client( name , first_name ,email )
+            self.view.main_menu
+        except ClientError as e:
+            self.view.show_error_message(str(e))    
+        else:
+            self.view.show_success_message(f"Client {name} {first_name} with email {email} added successfully.")
 
-    def add_room(self, name : str, type : str) -> None:
+    def add_room(self, name : str, type : str,capacity) -> None:
         """Add a new room to the model"""
-        self.rooms_manager.add_room(name, type)
+        self.rooms_manager.add_room(name, type,capacity)
 
 
     def get_room_available_time_interval(self, room : Room, time_interval : timedelta) -> list:
@@ -57,7 +69,8 @@ class Controller():
 
 if __name__ == "__main__":
 
-    Controller()
+    controller = Controller()
+    controller.start_view()
 
     """
     controller = Controller()

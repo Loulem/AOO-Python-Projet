@@ -14,10 +14,10 @@ class RoomsManager():
             room = Room.from_json(room_data, reservations_manager)
             self.rooms[room_name] = room
 
-    def add_room(self, name : str, type : str):
+    def add_room(self, name : str, type : str, capacity : int):
         if self.is_a_room(name):
             raise RoomError(f"Room {name} already exists")
-        new_room = Room(name,type,12)
+        new_room = Room(name,type,capacity)
         self.rooms[name] = new_room
 
 

@@ -1,8 +1,8 @@
 from tkinter import *
-from reservationApp.controller.controller import Controller
+
 
 class View():
-    def __init__(self,controller : Controller):    
+    def __init__(self,controller ):    
         self.controller = controller
         self.root = Tk()
         self.root.title("MeetingPro")
@@ -31,11 +31,12 @@ class View():
         self.choose_room_frame = Frame(self.root, bg="white")
         self.validation_of_reservation_frame = Frame(self.root, bg="white")
         self.main_menu()
-        self.root.mainloop()
 
 
     
-
+    def main(self):
+        """Main function to start the application."""
+        self.root.mainloop()
 
 # change menu
     def main_menu(self):
@@ -75,6 +76,26 @@ class View():
         cancel_button = Button(self.new_client_frame, text="Annuler", command=self.add_menu)
         cancel_button.pack()
 
+    def show_error_message(self, message: str):
+        """Display an error message in a popup window."""
+        error_window = Toplevel(self.root)
+        error_window.title("Erreur")
+        error_label = Label(error_window, text=message, fg="red")
+        error_label.pack(pady=20) 
+        close_button = Button(error_window, text="Fermer", command=error_window.destroy)
+        close_button.pack(pady=10)
+        error_window.geometry("300x150")
+
+    def show_success_message(self, message: str):
+        """Display a success message in a popup window."""
+        success_window = Toplevel(self.root)
+        success_window.title("Succès")
+        success_label = Label(success_window, text=message, fg="green")
+        success_label.pack(pady=20)
+        close_button = Button(success_window, text="Fermer", command=success_window.destroy)
+        close_button.pack(pady=10)
+        success_window.geometry("700x100")
+
     def new_room_menu(self):
         self.hide_all()
         self.new_room_frame.pack(fill="both", expand=1)
@@ -96,7 +117,7 @@ class View():
         new_room_type = OptionMenu(self.new_room_frame, type_of_room_list, *type_of_room)
         new_room_type.pack()
 
-        validation_button = Button(self.new_room_frame, text="valider", command=self.main_menu)
+        validation_button = Button(self.new_room_frame, text="valider", command=lambda:self.controller.add_room(new_room_name_entry.get(), type_of_room_list.get(), capacity_list.get(), self))
         validation_button.pack()
         cancel_button = Button(self.new_room_frame, text="Annuler", command=self.add_menu)
         cancel_button.pack()
