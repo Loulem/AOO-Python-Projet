@@ -1,8 +1,9 @@
+
 from tkinter import *
 
 
 class View():
-    def __init__(self,controller ):    
+    def __init__(self,controller):    
         self.controller = controller
         self.root = Tk()
         self.root.title("MeetingPro")
@@ -95,6 +96,7 @@ class View():
         close_button = Button(success_window, text="Fermer", command=success_window.destroy)
         close_button.pack(pady=10)
         success_window.geometry("700x100")
+        self.main_menu()  
 
     def new_room_menu(self):
         self.hide_all()
@@ -107,8 +109,8 @@ class View():
 
         capacity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         capacity_list = StringVar()
-        capacity_list.set(str(capacity[0]))  # Set default value
-        new_room_capacity = OptionMenu(self.new_room_frame, capacity_list, str(*capacity))
+        capacity_list.set(capacity[0])  # Set default value
+        new_room_capacity = OptionMenu(self.new_room_frame, capacity_list,*capacity)
         new_room_capacity.pack()
 
         type_of_room = ["Salle de réunion", "Salle de conférence", "Bureau"]
@@ -117,10 +119,11 @@ class View():
         new_room_type = OptionMenu(self.new_room_frame, type_of_room_list, *type_of_room)
         new_room_type.pack()
 
-        validation_button = Button(self.new_room_frame, text="valider", command=lambda:self.controller.add_room(new_room_name_entry.get(), type_of_room_list.get(), capacity_list.get(), self))
+        validation_button = Button(self.new_room_frame, text="valider", command=lambda:self.controller.add_room(new_room_name_entry.get(), type_of_room_list.get(), capacity_list.get()))
         validation_button.pack()
         cancel_button = Button(self.new_room_frame, text="Annuler", command=self.add_menu)
         cancel_button.pack()
+
 
     def show_menu(self):
         self.hide_all()
@@ -171,7 +174,6 @@ class View():
         cancel_button = Button(self.room_available_for_time_slot_frame, text="Annuler", command=self.show_menu)
         cancel_button.pack()
     
-
     def show_list_of_rooms(self):
         self.hide_all()
         self.show_frame.pack(fill="both", expand=1)
@@ -187,6 +189,7 @@ class View():
         # add some items to the listbox
         for i in range(100):
             listbox.insert(END, "Salle " + str(i))
+
 
     def reserve_menu(self):
         self.hide_all()

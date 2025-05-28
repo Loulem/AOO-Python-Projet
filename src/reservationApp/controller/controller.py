@@ -32,16 +32,26 @@ class Controller():
 
     def add_room(self, name : str, type : str,capacity) -> None:
         """Add a new room to the model"""
-        self.rooms_manager.add_room(name, type,capacity)
+        try:
+            self.rooms_manager.add_room(name, type,capacity)
+            self.view.main_menu
+        except RoomError as e:
+            self.view.show_error_message(str(e))    
+        else:
+            self.view.show_success_message(f"Room {name} of type {type} with capacity {capacity} added successfully.")
 
 
     def get_room_available_time_interval(self, room : Room, time_interval : timedelta) -> list:
         """Show all the available time interval for a room"""
         pass
 
-    def get_rooms_available(self)->list[Room]:
+    def get_rooms_available(self)->tuple [list[Room]]:
         """Give a list of all the available room for a time interval"""
-        pass
+        self.rooms_manager.get_available_rooms()
+        standards_rooms = [room for room in self.rooms_manager.rooms.values() if room.type == "Standard"]
+        conferences_rooms = [room for room in self.rooms_manager.rooms.values() if room.type == "Conference"]
+        informatiques_rooms = [room for room in self.rooms_manager.rooms.values() if room.type == "Informatique"]
+        return  standards_rooms, conferences_rooms, informatiques_rooms
 
     
     def add_reservation(self, room : str, time_interval : TimeInterval, client_email : str) -> None:
