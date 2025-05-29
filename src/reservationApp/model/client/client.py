@@ -27,7 +27,10 @@ class ClientManager():
         
     def get_clients_infos(self,email : str) -> dict:
         return self.clients[email].to_dictionnary()
-    
+    @property
+    def clients_list(self) -> list[Client]:
+        """Get a list of clients"""
+        return list(self.clients.values())
     @property
     def clients_name(self) -> list[str]:
         """Get a list of clients name"""
