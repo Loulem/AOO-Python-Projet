@@ -45,9 +45,13 @@ class Controller():
         """Show all the available time interval for a room"""
         pass
 
-    def get_rooms_available(self)->tuple [list[Room]]:
+    def get_rooms_available(self,start_year,start_month,start_day,start_hour,minute,end_year,end_month,end_day,end_hour,end_minute)->tuple [list[Room]]:
         """Give a list of all the available room for a time interval"""
-        self.rooms_manager.get_available_rooms()
+        try :
+            time_interval = TimeInterval(datetime(start_year, start_month, start_day, start_hour, minute),datetime(end_year, end_month, end_day, end_hour, end_minute))
+        except Exception as e:
+            return self.view.show_error_message(f"Error creating time interval: {str(e)}")
+        self.rooms_manager.get_available_rooms(time_interval)
         standards_rooms = [room for room in self.rooms_manager.rooms.values() if room.type == "Standard"]
         conferences_rooms = [room for room in self.rooms_manager.rooms.values() if room.type == "Conference"]
         informatiques_rooms = [room for room in self.rooms_manager.rooms.values() if room.type == "Informatique"]

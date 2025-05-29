@@ -221,6 +221,24 @@ class View():
         cancel_button.pack()
         
     def choose_room_menu(self,client_list_var : StringVar, date_of_beginning_variable : StringVar, date_of_ending_variable : StringVar):
+        """Display the choose room menu with the available rooms for the given time slot."""
+        start_date = date_of_beginning_variable.split(' ')[0]
+        end_date = date_of_ending_variable.split(' ')[0]
+        start_day, start_month, start_year = map(int, start_date.split('/'))
+        start_hour, start_minute = map(int, date_of_beginning_variable.split(' ')[1].split(':'))
+        end_day, end_month, end_year = map(int, end_date.split('/'))
+        end_hour, end_minute = map(int, date_of_beginning_variable.split(' ')[1].split(':'))
+        rooms_available = self.controller.get_rooms_available(start_year, start_month, start_day, start_hour, start_minute, end_year, end_month, end_day, end_hour, end_minute)
+        
+        if (rooms_available == None ):
+            self.show_error_message("Erreur lors de la récupération des salles disponibles.")
+            return
+        standard_rooms, conference_rooms, informatique_rooms = rooms_available
+        if not standard_rooms and not conference_rooms and not informatique_rooms:
+            # If no rooms are available, show an error message
+            self.show_error_message("Aucune salle disponible pour ce créneau.")
+            return
+
         self.hide_all()
         self.choose_room_frame.pack(fill="both", expand=1)
         choose_room_label = Label(self.choose_room_frame, text="Reserver une salle")
