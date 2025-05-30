@@ -14,9 +14,14 @@ class Controller():
         self.clients_manager = ClientManager()
         self.model = Model(self.rooms_manager,self.reservations_manager,self.clients_manager)
         self.view :View
-
+    
+    def save(self) -> None:
+        """Save the model data to a file"""
+        self.model.save_data("./data/data.json")
+    
     def start_view(self):
         """Start the view"""
+        self.model.load_data("./data/data.json")
         self.view = View(self)
         self.view.main()
 

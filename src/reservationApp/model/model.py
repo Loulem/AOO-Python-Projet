@@ -2,7 +2,7 @@ from reservationApp.model.client.client import *
 from reservationApp.model.reservation.reservation import *
 from reservationApp.model.room.room import *
 import json
-
+import os
 
 class Model():
     def __init__(self, rooms_manager : RoomsManager, reservations_manager : ReservationsManager, clients_manager : ClientManager):
@@ -12,7 +12,16 @@ class Model():
     
     def load_data(self, file :str ) -> None: # to model
         """Load the data from a json file """
-        #TODO:try to load data with alternative constructors in clients rooms and reservations
+        if not os.path.exists(file):
+        # Create the file with default data
+            default_data = {
+                "rooms": [],
+                "clients": []
+            }
+        with open(file, 'w', encoding='utf-8') as f:
+            json.dump(default_data, f, indent=4)
+        return  # No need to proceed further, file was just created
+
         with open(file, "r", encoding="utf-8") as f:
             data = json.load(f)
             self.rooms_manager.add_rooms_from_json(data["rooms"], self.reservations_manager)
