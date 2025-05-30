@@ -13,7 +13,7 @@ class Controller():
         self.reservations_manager = ReservationsManager()
         self.clients_manager = ClientManager()
         self.model = Model(self.rooms_manager,self.reservations_manager,self.clients_manager)
-        self.view = None
+        self.view :View
 
     def start_view(self):
         """Start the view"""
@@ -29,6 +29,13 @@ class Controller():
             self.view.show_error_message(str(e))    
         else:
             self.view.show_success_message(f"Client {name} {first_name} with email {email} added successfully.")
+    def get_clients_list(self) -> list[Client]:
+        """Get the list of clients"""
+        return self.clients_manager.clients_list
+
+    def get_rooms_list(self) -> list[Room]:
+        """Get the list of rooms"""
+        return self.rooms_manager.rooms_list
 
     def add_room(self, name : str, type : str,capacity) -> None:
         """Add a new room to the model"""
@@ -47,11 +54,19 @@ class Controller():
         """Show all the available time interval for a room"""
         pass
 
-    def get_rooms_available(self)->list[Room]:
+    def get_rooms_available(self,start_year,start_month,start_day,start_hour,minute,end_year,end_month,end_day,end_hour,end_minute)-> tuple[list[Room],list[Room],list[Room]] | None:
         """Give a list of all the available room for a time interval"""
-        pass
+        try :
+            time_interval = TimeInterval(datetime(start_year, start_month, start_day, start_hour, minute),datetime(end_year, end_month, end_day, end_hour, end_minute))
+        except ValueError as e:
+            self.view.show_error_message(f"Error creating time interval: {str(e)}")
+            return None
+        availables_rooms = self.rooms_manager.get_available_rooms(time_interval)
+        standards_rooms = [room for room in availables_rooms if room.type == "Standard"]
+        conferences_rooms = [room for room in availables_rooms if room.type == "Conference"]
+        informatiques_rooms = [room for room in availables_rooms if room.type == "Informatique"]
+        return  standards_rooms, conferences_rooms, informatiques_rooms
 
-    
     def add_reservation(self, room : str, time_interval : TimeInterval, client_email : str) -> None:
         """Create a new reservation for a room"""
         if not self.rooms_manager.is_a_room(room):
