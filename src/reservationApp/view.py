@@ -1,13 +1,8 @@
-
 from tkinter import *
-import re
-from tkinter import ttk
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from reservationApp.controller.controller import Controller  # imported only for type checking
+
 
 class View():
-    def __init__(self,controller : "Controller"):    
+    def __init__(self,controller ):    
         self.controller = controller
         self.root = Tk()
         self.root.title("MeetingPro")
@@ -100,7 +95,6 @@ class View():
         close_button = Button(success_window, text="Fermer", command=success_window.destroy)
         close_button.pack(pady=10)
         success_window.geometry("700x100")
-        self.main_menu()  
 
     def new_room_menu(self):
         self.hide_all()
@@ -108,13 +102,13 @@ class View():
         new_room_label = Label(self.new_room_frame, text="Ajouter une nouvelle salle")
         new_room_label.pack()
         var = StringVar()
-        new_room_name_entry = Entry(self.new_room_frame, text="Nom de la salle") # TODO remove use of text parameter
+        new_room_name_entry = Entry(self.new_room_frame, text="Nom de la salle")
         new_room_name_entry.pack()
 
         capacity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         capacity_list = StringVar()
         capacity_list.set(str(capacity[0]))  # Set default value
-        new_room_capacity = OptionMenu(self.new_room_frame, capacity_list,*capacity)
+        new_room_capacity = OptionMenu(self.new_room_frame, capacity_list, str(*capacity))
         new_room_capacity.pack()
 
         type_of_room = ["Salle de réunion", "Salle de conférence", "Bureau"]
@@ -123,11 +117,10 @@ class View():
         new_room_type = OptionMenu(self.new_room_frame, type_of_room_list, *type_of_room)
         new_room_type.pack()
 
-        validation_button = Button(self.new_room_frame, text="valider", command=lambda:self.controller.add_room(new_room_name_entry.get(), type_of_room_list.get(), capacity_list.get()))
+        validation_button = Button(self.new_room_frame, text="valider", command=lambda:self.controller.add_room(new_room_name_entry.get(), type_of_room_list.get(), capacity_list.get(), self))
         validation_button.pack()
         cancel_button = Button(self.new_room_frame, text="Annuler", command=self.add_menu)
         cancel_button.pack()
-
 
     def show_menu(self):
         self.hide_all()
@@ -141,16 +134,15 @@ class View():
         show_book_of_clients_button = Button(self.show_frame, text="Afficher les reservation d'un clients", command=self.reservation_menu)
         show_book_of_clients_button.pack()
 
-    def reservation_menu(self): # TODO change the name of this function to show_reservation_menu
-        """Display the reservation menu where the user can choose a client to reserve a room."""
+    def reservation_menu(self):
         self.hide_all()
         self.reservation_frame.pack(fill="both", expand=1)
         reservation_label = Label(self.reservation_frame, text="Réservation du client")
         reservation_label.pack()
         client_label = Label(self.reservation_frame, text="Client:")
         client_label.pack()
-        client = self.controller.get_clients_list()  # TODO if the list is empty there is an error, add something to handle this case
-        client_list = StringVar()
+        client =["Client 1", "Client 2", "Client 3", "Client 4", "Client 5"]
+        client_list= StringVar()
         client_list.set(client[0])  # Set default value
         client_option_menu = OptionMenu(self.reservation_frame, client_list, *client)
         client_option_menu.pack()
@@ -179,11 +171,10 @@ class View():
         cancel_button = Button(self.room_available_for_time_slot_frame, text="Annuler", command=self.show_menu)
         cancel_button.pack()
     
+
     def show_list_of_rooms(self):
         self.hide_all()
         self.show_frame.pack(fill="both", expand=1)
-        
-        """# Titre
         show_list_of_rooms_label = Label(self.show_frame, text="Liste des salles")
         show_list_of_rooms_label.pack()
         listbox = Listbox(self.show_frame)
@@ -192,40 +183,10 @@ class View():
         scrollbar = Scrollbar(self.show_frame)
         scrollbar.pack(side="right", fill="y")
         listbox.config(yscrollcommand=scrollbar.set)
-        scrollbar.config(command=listbox.yview)"""
-        # Get the list of rooms and display them in the listboxcolumns = ("Nom", "Type", "Capacité")
-        columns = ("Nom", "Type", "Capacité")
-        tree = ttk.Treeview(self.show_frame, columns=columns, show="headings", height=10)
-
-        for col in columns:
-            tree.heading(col, text=col)
-            tree.column(col, anchor="center")
-
-        try:
-            rooms = self.controller.get_rooms_list()
-            if not rooms:
-                tree.insert("", "end", values=("Aucune salle disponible", "", ""))
-            else:
-                for room in rooms:
-                    tree.insert("", "end", values=(room.name, room.type, room.capacity))
-        except Exception as e:
-            self.show_error_message(f"Erreur lors de la récupération des salles : {e}")
-
-        tree.pack(fill="both", expand=1, padx=20, pady=10)
-        """
-        try:
-            rooms = self.controller.get_rooms_list()
-            if not rooms:
-                listbox.insert(END, "Aucune salle disponible.")
-                return
-            
-            for room in rooms:
-                room_info = f"{room.name} | Type: {room.type} | Capacité: {room.capacity}"
-                listbox.insert(END, room_info)
-        except Exception as e:
-            self.show_error_message(f"Erreur lors de la récupération des salles : {e}")"""
-
-
+        scrollbar.config(command=listbox.yview)
+        # add some items to the listbox
+        for i in range(100):
+            listbox.insert(END, "Salle " + str(i))
 
     def reserve_menu(self):
         self.hide_all()
@@ -244,8 +205,7 @@ class View():
         date_of_ending_entry.pack()
         client_label = Label(self.reserve_frame, text="Client:")
         client_label.pack()
-        client = self.controller.get_clients_list() # a modifier pour recuperer la liste des clients
-        # TODO if the list is empty there is an error, add something to handle this case
+        client =["Client 1", "Client 2", "Client 3", "Client 4", "Client 5"] # a modifier pour recuperer la liste des clients
         client_list= StringVar()
         client_list.set(client[0])  # Set default value
         client_option_menu = OptionMenu(self.reserve_frame, client_list, *client)
@@ -254,33 +214,10 @@ class View():
         type_of_room_label.pack()
         validation_button = Button(self.reserve_frame, text="Valider", command=lambda: self.choose_room_menu(client_list, date_of_beginning_entry.get(), date_of_ending_entry.get()))
         validation_button.pack()
-        cancel_button = Button(self.reserve_frame, text="Annuler", command= self.main_menu)
+        cancel_button = Button(self.reserve_frame, text="Annuler", command=lambda: self.choose_room_menu)
         cancel_button.pack()
         
-    def choose_room_menu(self,client_list_var : StringVar, date_of_beginning_variable : str, date_of_ending_variable : str):
-        """Display the choose room menu with the available rooms for the given time slot."""
-        start_date = date_of_beginning_variable.split(' ')[0]
-        end_date = date_of_ending_variable.split(' ')[0]
-        regex = r'\b(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4} ([01][0-9]|2[0-3]):[0-5][0-9]\b' 
-        if not re.fullmatch(regex, date_of_beginning_variable) or not re.fullmatch(regex, date_of_ending_variable): # check if the date is in the following format : jj/mm/yyyy hh:mm
-            self.show_error_message("Format de date invalide. Utilisez le format JJ/MM/AAAA HH:MM.")
-            return
-        
-        start_day, start_month, start_year = map(int, start_date.split('/'))
-        start_hour, start_minute = map(int, date_of_beginning_variable.split(' ')[1].split(':'))
-        end_day, end_month, end_year = map(int, end_date.split('/'))
-        end_hour, end_minute = map(int, date_of_beginning_variable.split(' ')[1].split(':'))
-        rooms_available = self.controller.get_rooms_available(start_year, start_month, start_day, start_hour, start_minute, end_year, end_month, end_day, end_hour, end_minute)
-        
-        if (rooms_available == None ):
-            self.show_error_message("Erreur lors de la récupération des salles disponibles.")
-            return
-        standard_rooms, conference_rooms, informatique_rooms = rooms_available
-        if not standard_rooms and not conference_rooms and not informatique_rooms:
-            # If no rooms are available, show an error message
-            self.show_error_message("Aucune salle disponible pour ce créneau.")
-            return
-
+    def choose_room_menu(self,client_list_var : StringVar, date_of_beginning_variable : StringVar, date_of_ending_variable : StringVar):
         self.hide_all()
         self.choose_room_frame.pack(fill="both", expand=1)
         choose_room_label = Label(self.choose_room_frame, text="Reserver une salle")
