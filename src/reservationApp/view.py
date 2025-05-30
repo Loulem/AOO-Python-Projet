@@ -52,39 +52,47 @@ class View():
     def main_menu(self):
         self.hide_all()
         self.main_frame.pack(fill="both", expand=1)
-        add_button = Button(self.main_frame,fg="white",bg="blue", text="Ajouter", command=self.add_menu)
-        show_button = Button(self.main_frame,fg="white",bg="blue", text="Afficher", command=self.show_menu)
-        book_button = Button(self.main_frame,fg="white",bg="blue", text="Réserver", command=self.reserve_menu)
-        add_button.pack()
-        show_button.pack()
-        book_button.pack()
+        center_frame = Frame(self.main_frame, bg="white")
+        center_frame.pack(expand=True)
+        add_button = Button(center_frame,fg="white",bg="blue4", text="Ajouter", command=self.add_menu,height=1, width=20,font=(15))
+        show_button = Button(center_frame,fg="white",bg="blue4", text="Afficher", command=self.show_menu,height=1, width=20,font=(15))
+        book_button = Button(center_frame,fg="white",bg="blue4", text="Réserver", command=self.reserve_menu,height=1, width=20,font=(15))
+        add_button.pack(padx=20, pady=20)
+        show_button.pack(padx=20, pady=20)
+        book_button.pack(padx=20, pady=20)
 
     def add_menu(self):
         self.hide_all()
         self.add_frame.pack(fill="both", expand=1)
-        add_new_client_button = Button(self.add_frame,fg="white",bg="blue", text="Ajouter un client", command=self.new_client_menu)
-        add_new_client_button.pack()
-        add_new_room_button = Button(self.add_frame,fg="white",bg="blue", text="Ajouter une salle", command=self.new_room_menu)
-        add_new_room_button.pack()
+        center_frame = Frame(self.add_frame, bg="white")
+        center_frame.pack(expand=True)
+        add_new_client_button = Button(center_frame,fg="white",bg="blue4", text="Ajouter un client", command=self.new_client_menu,height=1, width=20,font=(15))
+        add_new_client_button.pack(padx=20, pady=20)
+        add_new_room_button = Button(center_frame,fg="white",bg="blue4", text="Ajouter une salle", command=self.new_room_menu,height=1, width=20,font=(15))
+        add_new_room_button.pack(padx=20, pady=20)
 
     def new_client_menu(self):
         self.hide_all()
         self.new_client_frame.pack(fill="both", expand=1)
-        new_client_label = Label(self.new_client_frame, text="Ajouter un client",bg="white")
+        fields_frame = Frame(self.new_client_frame, bg="white")
+        fields_frame.pack(anchor="w", padx=20, pady=40, fill="x")
+        buttons_frame = Frame(self.new_client_frame, bg="white")
+        buttons_frame.pack(side="bottom", fill="x", pady=20, padx=20)
+        new_client_label = Label(fields_frame, text="Ajouter un client",bg="white",font=(15))
         new_client_label.pack()
-        new_client_name_entry = Entry(self.new_client_frame,fg="white",bg="blue")
+        new_client_name_entry = Entry(fields_frame,bg="powderblue",font=(15))
         new_client_name_entry.insert(0, "Prénom")
         new_client_name_entry.pack()
-        new_client_surname_entry = Entry(self.new_client_frame,fg="white",bg="blue")
+        new_client_surname_entry = Entry(fields_frame,bg="powderblue",font=(15))
         new_client_surname_entry.insert(0, "Nom de famille")
         new_client_surname_entry.pack()
-        new_client_email_entry = Entry(self.new_client_frame,fg="white",bg="blue")
+        new_client_email_entry = Entry(fields_frame,bg="powderblue",font=(15))
         new_client_email_entry.insert(0, "example@mail.fr")
         new_client_email_entry.pack()
-        validation_button = Button(self.new_client_frame,fg="white",bg="blue", text="valider", command= lambda : self.controller.add_client(new_client_name_entry.get(),new_client_surname_entry.get(),new_client_email_entry.get()))
-        validation_button.pack()
-        cancel_button = Button(self.new_client_frame,fg="white",bg="blue", text="Annuler", command=self.add_menu)
-        cancel_button.pack()
+        validation_button = Button(buttons_frame,fg="white",bg="blue4", text="valider", command= lambda : self.controller.add_client(new_client_name_entry.get(),new_client_surname_entry.get(),new_client_email_entry.get()),height=1, width=20,font=(15))
+        validation_button.pack(side="right", anchor="se")
+        cancel_button = Button(buttons_frame,fg="white",bg="blue4", text="Annuler", command=self.add_menu,height=1, width=20,font=(15))
+        cancel_button.pack(side="left", anchor="sw")
 
     def show_error_message(self, message: str):
         """Display an error message in a popup window."""
@@ -92,7 +100,7 @@ class View():
         error_window.title("Erreur")
         error_label = Label(error_window, text=message, fg="red")
         error_label.pack(pady=20) 
-        close_button = Button(error_window, text="Fermer", command=error_window.destroy)
+        close_button = Button(error_window,fg="white",bg="blue4", text="Fermer", command=error_window.destroy)
         close_button.pack(pady=10)
         error_window.geometry("300x150")
 
@@ -102,7 +110,7 @@ class View():
         success_window.title("Succès")
         success_label = Label(success_window, text=message, fg="green")
         success_label.pack(pady=20)
-        close_button = Button(success_window, text="Fermer", command=success_window.destroy)
+        close_button = Button(success_window, text="Fermer", command=success_window.destroy,fg="white",bg="blue4")
         close_button.pack(pady=10)
         success_window.geometry("700x100")
 
@@ -112,7 +120,7 @@ class View():
         new_room_label = Label(self.new_room_frame, text="Ajouter une nouvelle salle",bg="white")
         new_room_label.pack()
         var = StringVar()
-        new_room_name_entry = Entry(self.new_room_frame, text="Nom de la salle") # TODO remove use of text parameter
+        new_room_name_entry = Entry(self.new_room_frame, text="Nom de la salle",bg="powderblue") # TODO remove use of text parameter
         new_room_name_entry.pack()
 
         capacity = [str(i) for i in range(1,14)]
@@ -127,22 +135,22 @@ class View():
         new_room_type = OptionMenu(self.new_room_frame, type_of_room_list, *type_of_room)
         new_room_type.pack()
 
-        validation_button = Button(self.new_room_frame, text="valider", command=lambda:self.controller.add_room(new_room_name_entry.get(), type_of_room_list.get(), capacity_list.get()))
+        validation_button = Button(self.new_room_frame, text="valider", command=lambda:self.controller.add_room(new_room_name_entry.get(), type_of_room_list.get(), capacity_list.get()),fg="white",bg="blue4")
         validation_button.pack()
-        cancel_button = Button(self.new_room_frame, text="Annuler", command=self.add_menu)
+        cancel_button = Button(self.new_room_frame, text="Annuler", command=self.add_menu,fg="white",bg="blue4")
         cancel_button.pack()
 
 
     def show_menu(self):
         self.hide_all()
         self.show_frame.pack(fill="both", expand=1)
-        show_list_of_rooms_button = Button(self.show_frame, text="Afficher la liste des salles", command=self.show_list_of_rooms)
+        show_list_of_rooms_button = Button(self.show_frame, text="Afficher la liste des salles", command=self.show_list_of_rooms,fg="white",bg="blue4")
         show_list_of_rooms_button.pack()
-        show_list_of_clients_button = Button(self.show_frame, text="Afficher la liste des clients")
+        show_list_of_clients_button = Button(self.show_frame, text="Afficher la liste des clients",fg="white",bg="blue4")
         show_list_of_clients_button.pack()
-        show_rooms_for_time_slot_button = Button(self.show_frame, text="Afficher les salles disponibles pour un créneau",command=self.room_available_for_time_slot_menu)
+        show_rooms_for_time_slot_button = Button(self.show_frame, text="Afficher les salles disponibles pour un créneau",command=self.room_available_for_time_slot_menu,fg="white",bg="blue4")
         show_rooms_for_time_slot_button.pack()
-        show_book_of_clients_button = Button(self.show_frame, text="Afficher les reservation d'un clients", command=self.reservation_menu)
+        show_book_of_clients_button = Button(self.show_frame, text="Afficher les reservation d'un clients", command=self.reservation_menu,fg="white",bg="blue4")
         show_book_of_clients_button.pack()
 
     def reservation_menu(self):# TODO change the name of this function to show_reservation_menu
@@ -169,9 +177,9 @@ class View():
         client_option_menu = OptionMenu(self.reservation_frame, client_list, *client_keys)
         client_option_menu.pack()
 
-        validation_button = Button(self.reservation_frame, text="valider", command=lambda :self.client_reservation_menu(client_list.get()),fg="white",bg="blue")
+        validation_button = Button(self.reservation_frame, text="valider", command=lambda :self.client_reservation_menu(client_list.get()),fg="white",bg="blue4")
         validation_button.pack()
-        cancel_button = Button(self.reservation_frame, text="Annuler", command=self.show_menu,fg="white",bg="blue")
+        cancel_button = Button(self.reservation_frame, text="Annuler", command=self.show_menu,fg="white",bg="blue4")
         cancel_button.pack()
 
     def client_reservation_menu(self,client_list_var : str):
@@ -185,27 +193,24 @@ class View():
         reservation_label.pack()
         show_client_label = Label(self.client_reservation_frame, text=f"Client: {client_list_var}",bg="white")
         show_client_label.pack()
-        back_button = Button(self.client_reservation_frame, text="Retour", command=self.reservation_menu,fg="white",bg="blue")
+        back_button = Button(self.client_reservation_frame, text="Retour", command=self.reservation_menu,fg="white",bg="blue4")
         back_button.pack()
         
         # Get the list of rooms and display them in the listboxcolumns = ("Nom", "Type", "Capacité")
         columns = ("Salle", "Type", "Capacité", "Début", "Fin", "Durée")
         tree = ttk.Treeview(self.client_reservation_frame, columns=columns, show="headings", height=10)
-
         for col in columns:
             tree.heading(col, text=col)
             tree.column(col, anchor="center")
-
         try:
-            rooms = self.controller.get_rooms_list()
-            if not rooms:
+            reservations = self.controller.get_rooms_list()
+            if not reservations:
                 tree.insert("", "end", values=("Aucune reservation"))
             else:
-                for room in rooms:
-                    tree.insert("", "end", values=(room.name, room.type, room.capacity))
+                for reservation in reservations:
+                    tree.insert("", "end", values=(reservation.name, reservation.type, reservation.capacity,reservation.Time_interval, reservation.start_datetime, reservation.duration))
         except Exception as e:
             self.show_error_message(f"Erreur lors de la récupération des salles : {e}")
-
         tree.pack(fill="both", expand=1, padx=20, pady=10)
 
 
@@ -216,29 +221,27 @@ class View():
         room_available_for_time_slot_label.pack()
         begin_label = Label(self.room_available_for_time_slot_frame, text="Début:",bg="white")
         begin_label.pack()
-        date_of_beginning_entry = Entry(self.room_available_for_time_slot_frame)
+        date_of_beginning_entry = Entry(self.room_available_for_time_slot_frame,bg="powderblue")
         date_of_beginning_entry.insert(0, "Date de début")
         date_of_beginning_entry.pack()
         end_label = Label(self.room_available_for_time_slot_frame, text="Fin:",bg="white")
         end_label.pack()
-        date_of_ending_entry = Entry(self.room_available_for_time_slot_frame)
+        date_of_ending_entry = Entry(self.room_available_for_time_slot_frame,bg="powderblue")
         date_of_ending_entry.insert(0, "Date de fin")
         date_of_ending_entry.pack()
-        validation_button = Button(self.room_available_for_time_slot_frame, text="valider", command=self.main_menu)
+        validation_button = Button(self.room_available_for_time_slot_frame, text="valider", command=self.main_menu,fg="white",bg="blue4")
         validation_button.pack()
-        cancel_button = Button(self.room_available_for_time_slot_frame, text="Annuler", command=self.show_menu)
+        cancel_button = Button(self.room_available_for_time_slot_frame, text="Annuler", command=self.show_menu,fg="white",bg="blue4")
         cancel_button.pack()
 
     def show_list_of_rooms(self):
         self.hide_all()
         self.show_frame.pack(fill="both", expand=1)
 
-        
         # Titre
         show_list_of_rooms_label = Label(self.show_frame, text="Liste des salles")
         show_list_of_rooms_label.pack()
 
-        
         # Get the list of rooms and display them in the listboxcolumns = ("Nom", "Type", "Capacité")
         columns = ("Nom", "Type", "Capacité")
         tree = ttk.Treeview(self.show_frame, columns=columns, show="headings", height=10)
@@ -267,12 +270,12 @@ class View():
         reserve_label.pack()
         begin_label = Label(self.reserve_frame, text="Début:",bg="white")
         begin_label.pack()
-        date_of_beginning_entry = Entry(self.reserve_frame)
+        date_of_beginning_entry = Entry(self.reserve_frame,bg="powderblue")
         date_of_beginning_entry.insert(0, "01/01/2024 12:00")  # Example date format
         date_of_beginning_entry.pack()
         end_label = Label(self.reserve_frame, text="Fin:",bg="white")
         end_label.pack()
-        date_of_ending_entry = Entry(self.reserve_frame)
+        date_of_ending_entry = Entry(self.reserve_frame,bg="powderblue")
         date_of_ending_entry.insert(0, "01/01/2024 13:00")
         date_of_ending_entry.pack()
         client_label = Label(self.reserve_frame, text="Client:",bg="white")
@@ -291,9 +294,9 @@ class View():
             client_option_menu.pack()
         type_of_room_label = Label(self.reserve_frame, text="Type:",bg="white")
         type_of_room_label.pack()
-        validation_button = Button(self.reserve_frame, text="Valider", command=lambda: self.choose_room_menu(client_dict[client_list.get()], date_of_beginning_entry.get(), date_of_ending_entry.get()))
+        validation_button = Button(self.reserve_frame, text="Valider", command=lambda: self.choose_room_menu(client_dict[client_list.get()], date_of_beginning_entry.get(), date_of_ending_entry.get()),fg="white",bg="blue4")
         validation_button.pack()
-        cancel_button = Button(self.reserve_frame, text="Annuler", command=lambda: self.main_menu())
+        cancel_button = Button(self.reserve_frame, text="Annuler", command=lambda: self.main_menu(),fg="white",bg="blue4")
         cancel_button.pack()
         
     def choose_room_menu(self,client : "Client", date_of_beginning_variable : str, date_of_ending_variable : str):
@@ -380,9 +383,9 @@ class View():
         type_of_room_computer_science_checkbutton.config(command=update_room_list)
         update_room_list()
 
-        validation_button = Button(self.choose_room_frame, text="Valider", command=lambda: self.validation_of_reservation_menu(client, time_interval, room_list_var))
+        validation_button = Button(self.choose_room_frame, text="Valider", command=lambda: self.validation_of_reservation_menu(client, time_interval, room_list_var),fg="white",bg="blue4")
         validation_button.pack()
-        cancel_button = Button(self.choose_room_frame, text="Annuler", command=self.reserve_menu)
+        cancel_button = Button(self.choose_room_frame, text="Annuler", command=self.reserve_menu,fg="white",bg="blue4")
         cancel_button.pack()
 
     def validation_of_reservation_menu(self,client_list_var : "Client", time_interval : TimeInterval, room_list_var : StringVar):
@@ -421,7 +424,7 @@ class View():
         capacity_label.pack()
         reservation_details_label = Label(self.validation_of_reservation_frame, text="Détails de la réservation",bg="white")
         reservation_details_label.pack()
-        main_menu_button = Button(self.validation_of_reservation_frame, text="menu principal", command=self.main_menu)
+        main_menu_button = Button(self.validation_of_reservation_frame, text="menu principal", command=self.main_menu,fg="white",bg="blue4")
         main_menu_button.pack()
         #self.controller.save()
 
