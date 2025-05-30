@@ -1,5 +1,6 @@
 from __future__ import annotations
 from reservationApp.model.reservation.reservation import *
+import re
 class RoomError(Exception):
     pass
 
@@ -15,6 +16,9 @@ class RoomsManager():
             self.rooms[room_name] = room
 
     def add_room(self, name : str, type : str, capacity : int):
+        pattern = r"^[A-Za-z0-9_-]+$"
+        if not re.match(pattern, name):
+            raise RoomError(f"Room name {name} est invalid il ne doit pas comprendre d'espace et de caractère non valide.")
         if self.is_a_room(name):
             raise RoomError(f"Room {name} already exists")
         new_room = Room(name,type,capacity)
