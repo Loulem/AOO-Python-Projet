@@ -39,6 +39,7 @@ class View():
         self.room_available_for_time_slot_frame = Frame(self.root, bg="white")
         self.choose_room_frame = Frame(self.root, bg="white")
         self.validation_of_reservation_frame = Frame(self.root, bg="white")
+        self.client_reservation_frame = Frame(self.root, bg="white")
         self.main_menu()
 
 
@@ -150,27 +151,63 @@ class View():
         self.reservation_frame.pack(fill="both", expand=1)
         reservation_label = Label(self.reservation_frame, text="Réservation du client",bg="white")
         reservation_label.pack()
-        client = self.controller.get_clients_dict() # TODO if the list is empty there is an error, add something to handle this case
         client_list= StringVar()
-        client_list.set(client[0])  # Set default value
         client_label = Label(self.reservation_frame, text="Client:",bg="white")
         client_label.pack()
         client_dict = self.controller.get_clients_dict()  
-        client = list(client_dict.keys())  # Create a list of client names
-        
         # TODO if the list is empty there is an error, add something to handle this case
-        client_list= StringVar()
         
-        if client == []:
-            client_list.set("Aucun client disponible")  # Set default value if no clients are available
-        else : 
-            client_list.set(client[0])  # Set default value
-            client_option_menu = OptionMenu(self.reservation_frame, client_list, *client)
-            client_option_menu.pack()
-        validation_button = Button(self.reservation_frame, text="valider", command=self.main_menu)
+        client_keys = list(client_dict.keys())
+        client_list = StringVar()
+
+        if not client_keys:
+            client_keys = ["Aucun client disponible"]
+            client_list.set(client_keys[0])
+        else:
+            client_list.set(client_keys[0])
+
+        client_option_menu = OptionMenu(self.reservation_frame, client_list, *client_keys)
+        client_option_menu.pack()
+
+        validation_button = Button(self.reservation_frame, text="valider", command=lambda :self.client_reservation_menu(client_list.get()),fg="white",bg="blue")
         validation_button.pack()
-        cancel_button = Button(self.reservation_frame, text="Annuler", command=self.show_menu)
+        cancel_button = Button(self.reservation_frame, text="Annuler", command=self.show_menu,fg="white",bg="blue")
         cancel_button.pack()
+
+    def client_reservation_menu(self,client_list_var : str):
+        self.hide_all()
+        self.client_reservation_frame.pack(fill="both", expand=1)
+        reservation_of_client_label = Label(self.client_reservation_frame, text="Réservation du client",bg="white")
+        reservation_of_client_label.pack()
+        client_label = Label(self.client_reservation_frame, text="Client:",bg="white")
+        client_label.pack()
+        reservation_label= Label(self.client_reservation_frame, text="Réservation:",bg="white")
+        reservation_label.pack()
+        show_client_label = Label(self.client_reservation_frame, text=f"Client: {client_list_var}",bg="white")
+        show_client_label.pack()
+        back_button = Button(self.client_reservation_frame, text="Retour", command=self.reservation_menu,fg="white",bg="blue")
+        back_button.pack()
+        
+        # Get the list of rooms and display them in the listboxcolumns = ("Nom", "Type", "Capacité")
+        columns = ("Salle", "Type", "Capacité", "Début", "Fin", "Durée")
+        tree = ttk.Treeview(self.client_reservation_frame, columns=columns, show="headings", height=10)
+
+        for col in columns:
+            tree.heading(col, text=col)
+            tree.column(col, anchor="center")
+
+        try:
+            rooms = self.controller.get_rooms_list()
+            if not rooms:
+                tree.insert("", "end", values=("Aucune salle disponible", "", ""))
+            else:
+                for room in rooms:
+                    tree.insert("", "end", values=(room.name, room.type, room.capacity))
+        except Exception as e:
+            self.show_error_message(f"Erreur lors de la récupération des salles : {e}")
+
+        tree.pack(fill="both", expand=1, padx=20, pady=10)
+
 
     def room_available_for_time_slot_menu(self):
         self.hide_all()
@@ -413,6 +450,8 @@ class View():
             widget.destroy()
         for widget in self.validation_of_reservation_frame.winfo_children():
             widget.destroy()
+        for widget in self.client_reservation_frame.winfo_children():
+            widget.destroy()
 
         # hide all frames
         self.new_client_frame.pack_forget()
@@ -426,3 +465,4 @@ class View():
         self.room_available_for_time_slot_frame.pack_forget()
         self.choose_room_frame.pack_forget()
         self.validation_of_reservation_frame.pack_forget()
+        self.client_reservation_frame.pack_forget()
