@@ -43,6 +43,11 @@ class Controller():
     def get_clients_list(self) -> list[Client]:
         """Get the list of clients"""
         return self.clients_manager.clients_list
+    
+    def get_rooms_list(self) -> list[Room]:
+        """Get the list of rooms"""
+        return self.rooms_manager.rooms_list
+    
     def get_room_available_time_interval(self, room : Room, time_interval : timedelta) -> list:
         """Show all the available time interval for a room"""
         pass

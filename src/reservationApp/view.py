@@ -178,6 +178,8 @@ class View():
     def show_list_of_rooms(self):
         self.hide_all()
         self.show_frame.pack(fill="both", expand=1)
+        
+        # Titre
         show_list_of_rooms_label = Label(self.show_frame, text="Liste des salles")
         show_list_of_rooms_label.pack()
         listbox = Listbox(self.show_frame)
@@ -187,9 +189,19 @@ class View():
         scrollbar.pack(side="right", fill="y")
         listbox.config(yscrollcommand=scrollbar.set)
         scrollbar.config(command=listbox.yview)
-        # add some items to the listbox
-        for i in range(100):
-            listbox.insert(END, "Salle " + str(i))
+
+        try:
+            rooms = self.controller.get_rooms_list()
+            if not rooms:
+                listbox.insert(END, "Aucune salle disponible.")
+                return
+            
+            for room in rooms:
+                room_info = f"{room.name} | Type: {room.type} | Capacité: {room.capacity}"
+                listbox.insert(END, room_info)
+        except Exception as e:
+            self.show_error_message(f"Erreur lors de la récupération des salles : {e}")
+
 
 
     def reserve_menu(self):

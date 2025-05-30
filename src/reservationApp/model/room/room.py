@@ -38,6 +38,11 @@ class RoomsManager():
     def rooms_name(self) -> list[str]:
         """Get a list of rooms name"""
         return [room.name for room in self.rooms.values()]
+    
+    @property
+    def rooms_list(self) -> list[Room]:
+        """Get a list of rooms"""
+        return list(self.rooms.values())
 
 
 class Room():
