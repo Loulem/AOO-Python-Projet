@@ -25,6 +25,11 @@ class TimeInterval():
         }
     
     @property
+    def duration(self) -> timedelta:
+        """Return the duration of the time interval"""
+        return self.end_datetime - self.start_datetime
+    
+    @property
     def end_datetime(self):
         return self._end_datetime
     

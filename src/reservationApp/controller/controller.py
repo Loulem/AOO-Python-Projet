@@ -29,10 +29,12 @@ class Controller():
             self.view.show_error_message(str(e))    
         else:
             self.view.show_success_message(f"Client {name} {first_name} with email {email} added successfully.")
+    def get_clients_dict(self) -> dict[str,Client]:
+        """Get the list of clients"""
+        return self.clients_manager.clients
     def get_clients_list(self) -> list[Client]:
         """Get the list of clients"""
         return self.clients_manager.clients_list
-
     def get_rooms_list(self) -> list[Room]:
         """Get the list of rooms"""
         return self.rooms_manager.rooms_list
