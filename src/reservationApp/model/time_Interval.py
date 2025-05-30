@@ -31,5 +31,5 @@ class TimeInterval():
     @end_datetime.setter
     def end_datetime(self, end_datetime : datetime ):
         if end_datetime <= self.start_datetime :
-            raise ValueError("end of the time Interval is before the start")
+            raise ValueError("End of the time Interval is before the start")
         
