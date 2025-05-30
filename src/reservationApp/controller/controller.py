@@ -34,12 +34,15 @@ class Controller():
             self.view.show_error_message(str(e))    
         else:
             self.view.show_success_message(f"Client {name} {first_name} with email {email} added successfully.")
+    
     def get_clients_dict(self) -> dict[str,Client]:
         """Get the list of clients"""
         return self.clients_manager.clients
+    
     def get_clients_list(self) -> list[Client]:
         """Get the list of clients"""
         return self.clients_manager.clients_list
+    
     def get_rooms_list(self) -> list[Room]:
         """Get the list of rooms"""
         return self.rooms_manager.rooms_list
@@ -55,25 +58,34 @@ class Controller():
         else:
             self.view.show_success_message(f"Room {name} of type {type} with capacity {capacity} added successfully.")
 
+    def get_reservations_of_client(self, client_email : str) -> list[Reservation]:
+        client_id = self.clients_manager.clients[client_email].id
+        client_reservations = []
+        for reservation in self.reservations_manager.reservations.values():
+            if reservation.client_id == client_id:
+                client_reservations.append(reservation)
+        return client_reservations
 
+    
 
-    def get_room_available_time_interval(self, room : Room, time_interval : timedelta) -> list:
-        """Show all the available time interval for a room"""
-        pass
-
-    def get_rooms_available(self,start_year,start_month,start_day,start_hour,minute,end_year,end_month,end_day,end_hour,end_minute)-> tuple[list[Room],list[Room],list[Room]] | None:
+    def get_rooms_available_per_type(self,start_year,start_month,start_day,start_hour,minute,end_year,end_month,end_day,end_hour,end_minute)-> tuple[list[Room],list[Room],list[Room]] | None:
+        """Give a list of all the available room for a time interval for each type"""
+        availables_rooms = self.get_rooms_available(start_year,start_month,start_day,start_hour,minute,end_year,end_month,end_day,end_hour,end_minute)
+        if availables_rooms == None:
+            return
+        standards_rooms = [room for room in availables_rooms if room.type == "Standard"]
+        conferences_rooms = [room for room in availables_rooms if room.type == "Conference"]
+        informatiques_rooms = [room for room in availables_rooms if room.type == "Informatique"]
+        return  standards_rooms, conferences_rooms, informatiques_rooms
+    def get_rooms_available(self,start_year,start_month,start_day,start_hour,minute,end_year,end_month,end_day,end_hour,end_minute)-> list[Room] | None:
         """Give a list of all the available room for a time interval"""
         try :
             time_interval = TimeInterval(datetime(start_year, start_month, start_day, start_hour, minute),datetime(end_year, end_month, end_day, end_hour, end_minute))
         except ValueError as e:
             self.view.show_error_message(f"Error creating time interval: {str(e)}")
             return None
-        availables_rooms = self.rooms_manager.get_available_rooms(time_interval)
-        standards_rooms = [room for room in availables_rooms if room.type == "Standard"]
-        conferences_rooms = [room for room in availables_rooms if room.type == "Conference"]
-        informatiques_rooms = [room for room in availables_rooms if room.type == "Informatique"]
-        return  standards_rooms, conferences_rooms, informatiques_rooms
-
+        return  self.rooms_manager.get_available_rooms(time_interval)
+    
     def add_reservation(self, room : str, time_interval : TimeInterval, client_email : str) -> None:
         """Create a new reservation for a room"""
         if not self.rooms_manager.is_a_room(room):
@@ -99,6 +111,7 @@ class Controller():
 
 if __name__ == "__main__":
     controller = Controller()
+    
     controller.start_view()
     controller.save()
 
