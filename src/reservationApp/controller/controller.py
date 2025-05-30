@@ -45,8 +45,7 @@ class Controller():
     
     def get_rooms_list(self) -> list[Room]:
         """Get the list of rooms"""
-        return self.rooms_manager.rooms_list
-
+        return self.rooms_manager.rooms_lis
     def add_room(self, name : str, type : str,capacity) -> None:
         """Add a new room to the model"""
 
