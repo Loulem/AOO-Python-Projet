@@ -5,7 +5,7 @@ class TimeInterval():
     def __init__(self, start_datetime : datetime , end_datetime : datetime) -> None:
         """Initialize the time interval with a start day, start hour and duration"""
         self.start_datetime = start_datetime
-        self._end_datetime = end_datetime
+        self.end_datetime = end_datetime
     
     @classmethod
     def from_json(cls, json_data:dict) -> TimeInterval:
@@ -30,6 +30,11 @@ class TimeInterval():
     
     @end_datetime.setter
     def end_datetime(self, end_datetime : datetime ):
+        """Set the end datetime of the time interval"""
+        
         if end_datetime <= self.start_datetime :
-            raise ValueError("end of the time Interval is before the start")
+
+            raise ValueError("End of the time Interval is before the start")
+        self._end_datetime = end_datetime
+
         

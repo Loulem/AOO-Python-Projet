@@ -49,7 +49,7 @@ class Client():
     def __init__(self,name : str, first_name : str, email : str) -> None:
         self.name = name
         self.first_name = first_name
-        self.email = email  # ajouter un property pour afficher une erreur si l’email n’est pas de la forme ____@___.__
+        self.email = email  
         self.id = str(uuid.uuid4())
         self._reservertions_id : list[str] = [] #TODO: ajouter les reservations id quand on load et quand on les créer 
 

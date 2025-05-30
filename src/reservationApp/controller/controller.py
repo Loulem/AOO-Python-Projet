@@ -24,7 +24,7 @@ class Controller():
         """Add a new client to the model"""
         try:
             self.clients_manager.add_client( name , first_name ,email )
-            self.view.main_menu
+            self.view.main_menu()
         except ClientError as e:
             self.view.show_error_message(str(e))    
         else:
@@ -32,7 +32,15 @@ class Controller():
 
     def add_room(self, name : str, type : str,capacity) -> None:
         """Add a new room to the model"""
-        self.rooms_manager.add_room(name, type,capacity)
+
+        try:
+            self.rooms_manager.add_room(name, type,capacity)
+            self.view.main_menu()
+        except RoomError as e:
+            self.view.show_error_message(str(e))    
+        else:
+            self.view.show_success_message(f"Room {name} of type {type} with capacity {capacity} added successfully.")
+
 
 
     def get_room_available_time_interval(self, room : Room, time_interval : timedelta) -> list:
@@ -68,7 +76,6 @@ class Controller():
 
 
 if __name__ == "__main__":
-
     controller = Controller()
     controller.start_view()
 
