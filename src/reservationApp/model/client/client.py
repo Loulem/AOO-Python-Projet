@@ -45,6 +45,11 @@ class ClientManager():
         """Return true if it is an already register client"""
         return email in self.clients_email
 
+    @property
+    def clients_list(self) -> list[Client]:
+        """Get a list of clients"""
+        return list(self.clients.values())
+
 class Client():
     def __init__(self,name : str, first_name : str, email : str) -> None:
         self.name = name

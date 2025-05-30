@@ -1,8 +1,12 @@
 from tkinter import *
-
+import re
+from tkinter import ttk
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from reservationApp.controller.controller import Controller  # imported only for type checking
 
 class View():
-    def __init__(self,controller ):    
+    def __init__(self,controller :"Controller"):    
         self.controller = controller
         self.root = Tk()
         self.root.title("MeetingPro")
@@ -96,19 +100,20 @@ class View():
         close_button.pack(pady=10)
         success_window.geometry("700x100")
 
+
     def new_room_menu(self):
         self.hide_all()
         self.new_room_frame.pack(fill="both", expand=1)
         new_room_label = Label(self.new_room_frame, text="Ajouter une nouvelle salle",bg="white")
         new_room_label.pack()
         var = StringVar()
-        new_room_name_entry = Entry(self.new_room_frame, text="Nom de la salle")
+        new_room_name_entry = Entry(self.new_room_frame, text="Nom de la salle") # TODO remove use of text parameter
         new_room_name_entry.pack()
 
-        capacity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        capacity = [str(i) for i in range(1,14)]
         capacity_list = StringVar()
-        capacity_list.set(str(capacity[0]))  # Set default value
-        new_room_capacity = OptionMenu(self.new_room_frame, capacity_list, str(*capacity))
+        capacity_list.set(capacity[0])  # Set default value
+        new_room_capacity = OptionMenu(self.new_room_frame, capacity_list, *capacity)
         new_room_capacity.pack()
 
         type_of_room = ["Standard", "Conference", "Informatique"]
@@ -117,7 +122,7 @@ class View():
         new_room_type = OptionMenu(self.new_room_frame, type_of_room_list, *type_of_room)
         new_room_type.pack()
 
-        validation_button = Button(self.new_room_frame, text="valider", command=lambda:self.controller.add_room(new_room_name_entry.get(), type_of_room_list.get(), capacity_list.get(), self))
+        validation_button = Button(self.new_room_frame, text="valider", command=lambda:self.controller.add_room(new_room_name_entry.get(), type_of_room_list.get(), capacity_list.get()))
         validation_button.pack()
         cancel_button = Button(self.new_room_frame, text="Annuler", command=self.add_menu)
         cancel_button.pack()
@@ -134,7 +139,8 @@ class View():
         show_book_of_clients_button = Button(self.show_frame, text="Afficher les reservation d'un clients", command=self.reservation_menu)
         show_book_of_clients_button.pack()
 
-    def reservation_menu(self):
+    def reservation_menu(self):# TODO change the name of this function to show_reservation_menu
+        """Display the reservation menu where the user can choose a client to reserve a room."""
         self.hide_all()
         self.reservation_frame.pack(fill="both", expand=1)
         reservation_label = Label(self.reservation_frame, text="Réservation du client",bg="white")

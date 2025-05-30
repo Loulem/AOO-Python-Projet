@@ -27,10 +27,22 @@ class RoomsManager():
     def to_dictionnary(self):
         return {room_name: room_data.to_dictionnary() for room_name, room_data in self.rooms.items()} 
             
+    def get_available_rooms(self, time_interval: TimeInterval) -> list[Room]:
+        """Return a list of available rooms for a given time interval"""
+        available_rooms = []
+        for room in self.rooms.values():
+            if room.is_available(time_interval):
+                available_rooms.append(room)
+        return available_rooms
+    @property
+    def rooms_list(self) -> list[Room]:
+        """Get a list of rooms"""
+        return list(self.rooms.values())
     @property
     def rooms_name(self) -> list[str]:
         """Get a list of rooms name"""
         return [room.name for room in self.rooms.values()]
+
 
 
 class Room():
