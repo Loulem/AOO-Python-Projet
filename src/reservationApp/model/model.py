@@ -15,12 +15,11 @@ class Model():
         if not os.path.exists(file):
         # Create the file with default data
             default_data = {
-                "rooms": [],
-                "clients": []
             }
-        with open(file, 'w', encoding='utf-8') as f:
-            json.dump(default_data, f, indent=4)
-        return  # No need to proceed further, file was just created
+            print("hello")
+            with open(file, "w", encoding="utf-8") as f:
+                json.dump(default_data, f, indent=4)
+            return  # No need to proceed further, file was just created
 
         with open(file, "r", encoding="utf-8") as f:
             data = json.load(f)
