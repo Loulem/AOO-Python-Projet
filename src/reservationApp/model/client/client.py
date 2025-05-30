@@ -39,7 +39,7 @@ class ClientManager():
         return list(self.clients.keys())
 
     def to_dictionnary(self):
-        return {client_id: client_data.to_dictionnary() for client_id, client_data in self.clients.items()}
+        return {client_email: client_data.to_dictionnary() for client_email, client_data in self.clients.items()}
 
     def is_a_client(self,email : str) -> bool:
         """Return true if it is an already register client"""
