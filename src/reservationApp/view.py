@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from reservationApp.controller.controller import Controller  # imported only for type checking
 
 class View():
-    def __init__(self,controller : Controller):    
+    def __init__(self,controller : "Controller"):    
         self.controller = controller
         self.root = Tk()
         self.root.title("MeetingPro")
