@@ -175,18 +175,33 @@ class View():
     def show_list_of_rooms(self):
         self.hide_all()
         self.show_frame.pack(fill="both", expand=1)
-        show_list_of_rooms_label = Label(self.show_frame, text="Liste des salles",bg="white")
+
+        
+        # Titre
+        show_list_of_rooms_label = Label(self.show_frame, text="Liste des salles")
         show_list_of_rooms_label.pack()
-        listbox = Listbox(self.show_frame)
-        listbox.pack(fill="both", expand=1)
-        # add a scrollbar
-        scrollbar = Scrollbar(self.show_frame)
-        scrollbar.pack(side="right", fill="y")
-        listbox.config(yscrollcommand=scrollbar.set)
-        scrollbar.config(command=listbox.yview)
-        # add some items to the listbox
-        for i in range(100):
-            listbox.insert(END, "Salle " + str(i))
+
+        
+        # Get the list of rooms and display them in the listboxcolumns = ("Nom", "Type", "Capacité")
+        columns = ("Nom", "Type", "Capacité")
+        tree = ttk.Treeview(self.show_frame, columns=columns, show="headings", height=10)
+
+        for col in columns:
+            tree.heading(col, text=col)
+            tree.column(col, anchor="center")
+
+        try:
+            rooms = self.controller.get_rooms_list()
+            if not rooms:
+                tree.insert("", "end", values=("Aucune salle disponible", "", ""))
+            else:
+                for room in rooms:
+                    tree.insert("", "end", values=(room.name, room.type, room.capacity))
+        except Exception as e:
+            self.show_error_message(f"Erreur lors de la récupération des salles : {e}")
+
+        tree.pack(fill="both", expand=1, padx=20, pady=10)
+
 
     def reserve_menu(self):
         self.hide_all()
