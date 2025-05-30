@@ -232,7 +232,7 @@ class View():
         cancel_button = Button(self.room_available_for_time_slot_frame, text="Annuler", command=self.show_menu)
         cancel_button.pack()
 
-    def show_clients(self):
+    def show_list_of_rooms(self):
         self.hide_all()
         self.show_frame.pack(fill="both", expand=1)
 
@@ -260,14 +260,14 @@ class View():
 
         tree.pack(fill="both", expand=1, padx=20, pady=10)
 
-    def show_list_of_rooms(self):
+    def show_clients(self):
         self.hide_all()
         self.show_frame.pack(fill="both", expand=1)
 
         
         # Titre
-        show_list_of_rooms_label = Label(self.show_frame, text="Liste des salles")
-        show_list_of_rooms_label.pack()
+        show_list_of_clients_label = Label(self.show_frame, text="Liste des clients")
+        show_list_of_clients_label.pack()
 
         columns = ("Nom", "Prénom", "Email", "ID")
         tree = ttk.Treeview(self.show_frame, columns=columns, show="headings", height=10)
