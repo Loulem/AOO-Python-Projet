@@ -7,13 +7,6 @@ class RoomsManager():
     def __init__(self):
         self.rooms : dict[str,Room] = {}
 
-    def get_available_rooms(self, time_interval: TimeInterval) -> list[Room]:
-        """Return a list of available rooms for a given time interval"""
-        available_rooms = []
-        for room in self.rooms.values():
-            if room.is_available(time_interval):
-                available_rooms.append(room)
-        return available_rooms
     
     def add_rooms_from_json(self, rooms_data : dict[str,dict[str,str]], reservations_manager : ReservationsManager) :
         """Create a room manager from a json data"""

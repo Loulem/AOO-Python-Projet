@@ -32,8 +32,9 @@ class TimeInterval():
     def end_datetime(self, end_datetime : datetime ):
         """Set the end datetime of the time interval"""
         
-        print("Setting end datetime")
         if end_datetime <= self.start_datetime :
+
             raise ValueError("End of the time Interval is before the start")
         self._end_datetime = end_datetime
+
         
