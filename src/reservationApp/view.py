@@ -2,9 +2,12 @@
 from tkinter import *
 import re
 from tkinter import ttk
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from reservationApp.controller.controller import Controller  # imported only for type checking
 
 class View():
-    def __init__(self,controller):    
+    def __init__(self,controller : Controller):    
         self.controller = controller
         self.root = Tk()
         self.root.title("MeetingPro")
