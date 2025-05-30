@@ -1,8 +1,12 @@
 from tkinter import *
-
+import re
+from tkinter import ttk
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from reservationApp.controller.controller import Controller  # imported only for type checking
 
 class View():
-    def __init__(self,controller ):    
+    def __init__(self,controller :"Controller"):    
         self.controller = controller
         self.root = Tk()
         self.root.title("MeetingPro")
@@ -105,10 +109,10 @@ class View():
         new_room_name_entry = Entry(self.new_room_frame, text="Nom de la salle")
         new_room_name_entry.pack()
 
-        capacity = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        capacity = [str(i) for i in range(1,14)]
         capacity_list = StringVar()
-        capacity_list.set(str(capacity[0]))  # Set default value
-        new_room_capacity = OptionMenu(self.new_room_frame, capacity_list, str(*capacity))
+        capacity_list.set(capacity[0])  # Set default value
+        new_room_capacity = OptionMenu(self.new_room_frame, capacity_list, *capacity)
         new_room_capacity.pack()
 
         type_of_room = ["Standard", "Conference", "Informatique"]
