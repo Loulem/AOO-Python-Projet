@@ -147,7 +147,7 @@ class View():
         reservation_label.pack()
         client_label = Label(self.reservation_frame, text="Client:",bg="white")
         client_label.pack()
-        client =["Client 1", "Client 2", "Client 3", "Client 4", "Client 5"]
+        client = self.controller.get_clients_list() # TODO if the list is empty there is an error, add something to handle this case
         client_list= StringVar()
         client_list.set(client[0])  # Set default value
         client_option_menu = OptionMenu(self.reservation_frame, client_list, *client)
@@ -226,16 +226,21 @@ class View():
         date_of_ending_entry.pack()
         client_label = Label(self.reserve_frame, text="Client:",bg="white")
         client_label.pack()
-        client =["Client 1", "Client 2", "Client 3", "Client 4", "Client 5"] # a modifier pour recuperer la liste des clients
+        client = self.controller.get_clients_list() # a modifier pour recuperer la liste des clients
+        # TODO if the list is empty there is an error, add something to handle this case
         client_list= StringVar()
-        client_list.set(client[0])  # Set default value
-        client_option_menu = OptionMenu(self.reserve_frame, client_list, *client)
-        client_option_menu.pack()
+        
+        if client == []:
+            client_list.set("Aucun client disponible")  # Set default value if no clients are available
+        else : 
+            client_list.set(client[0])  # Set default value
+            client_option_menu = OptionMenu(self.reserve_frame, client_list, *client)
+            client_option_menu.pack()
         type_of_room_label = Label(self.reserve_frame, text="Type:",bg="white")
         type_of_room_label.pack()
         validation_button = Button(self.reserve_frame, text="Valider", command=lambda: self.choose_room_menu(client_list, date_of_beginning_entry.get(), date_of_ending_entry.get()))
         validation_button.pack()
-        cancel_button = Button(self.reserve_frame, text="Annuler", command=lambda: self.choose_room_menu)
+        cancel_button = Button(self.reserve_frame, text="Annuler", command=lambda: self.main_menu())
         cancel_button.pack()
         
 
