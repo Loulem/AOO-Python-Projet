@@ -35,6 +35,7 @@ class View():
         self.new_client_frame = Frame(self.root, bg="white")
         self.new_room_frame = Frame(self.root, bg="white")
         self.show_list_of_rooms_frame = Frame(self.root, bg="white")
+        self.show_clients_frame = Frame(self.root, bg="white")
         self.reservation_frame = Frame(self.root, bg="white")
         self.room_available_for_time_slot_frame = Frame(self.root, bg="white")
         self.choose_room_frame = Frame(self.root, bg="white")
@@ -98,6 +99,7 @@ class View():
 
     def show_success_message(self, message: str):
         """Display a success message in a popup window."""
+        self.controller.save()
         success_window = Toplevel(self.root)
         success_window.title("Succès")
         success_label = Label(success_window, text=message, fg="green")
@@ -105,6 +107,7 @@ class View():
         close_button = Button(success_window, text="Fermer", command=success_window.destroy)
         close_button.pack(pady=10)
         success_window.geometry("700x100")
+        
 
     def new_room_menu(self):
         self.hide_all()
@@ -138,7 +141,7 @@ class View():
         self.show_frame.pack(fill="both", expand=1)
         show_list_of_rooms_button = Button(self.show_frame, text="Afficher la liste des salles", command=self.show_list_of_rooms)
         show_list_of_rooms_button.pack()
-        show_list_of_clients_button = Button(self.show_frame, text="Afficher la liste des clients")
+        show_list_of_clients_button = Button(self.show_frame, text="Afficher la liste des clients", command=self.show_clients)
         show_list_of_clients_button.pack()
         show_rooms_for_time_slot_button = Button(self.show_frame, text="Afficher les salles disponibles pour un créneau",command=self.room_available_for_time_slot_menu)
         show_rooms_for_time_slot_button.pack()
@@ -238,8 +241,6 @@ class View():
         show_list_of_rooms_label = Label(self.show_frame, text="Liste des salles")
         show_list_of_rooms_label.pack()
 
-        
-        # Get the list of rooms and display them in the listboxcolumns = ("Nom", "Type", "Capacité")
         columns = ("Nom", "Type", "Capacité")
         tree = ttk.Treeview(self.show_frame, columns=columns, show="headings", height=10)
 
@@ -256,6 +257,34 @@ class View():
                     tree.insert("", "end", values=(room.name, room.type, room.capacity))
         except Exception as e:
             self.show_error_message(f"Erreur lors de la récupération des salles : {e}")
+
+        tree.pack(fill="both", expand=1, padx=20, pady=10)
+
+    def show_clients(self):
+        self.hide_all()
+        self.show_frame.pack(fill="both", expand=1)
+
+        
+        # Titre
+        show_list_of_clients_label = Label(self.show_frame, text="Liste des clients")
+        show_list_of_clients_label.pack()
+
+        columns = ("Nom", "Prénom", "Email", "ID")
+        tree = ttk.Treeview(self.show_frame, columns=columns, show="headings", height=10)
+
+        for col in columns:
+            tree.heading(col, text=col)
+            tree.column(col, anchor="center")
+
+        try:
+            clients = self.controller.get_clients_list()
+            if not clients:
+                tree.insert("", "end", values=("Aucune salle disponible", "", "",""))
+            else:
+                for client in clients:
+                    tree.insert("", "end", values=(client.first_name, client.name, client.email, client.id))
+        except Exception as e:
+            self.show_error_message(f"Erreur lors de la récupération des clients : {e}")
 
         tree.pack(fill="both", expand=1, padx=20, pady=10)
 
@@ -442,6 +471,8 @@ class View():
             widget.destroy()
         for widget in self.show_list_of_rooms_frame.winfo_children():
             widget.destroy()
+        for widget in self.show_clients_frame.winfo_children():
+            widget.destroy()
         for widget in self.reservation_frame.winfo_children():
             widget.destroy()
         for widget in self.room_available_for_time_slot_frame.winfo_children():
@@ -461,6 +492,7 @@ class View():
         self.show_frame.pack_forget()
         self.reserve_frame.pack_forget()
         self.show_list_of_rooms_frame.pack_forget()
+        self.show_clients_frame.pack_forget()
         self.reservation_frame.pack_forget()
         self.room_available_for_time_slot_frame.pack_forget()
         self.choose_room_frame.pack_forget()
