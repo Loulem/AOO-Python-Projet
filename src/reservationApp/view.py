@@ -178,6 +178,7 @@ class View():
         cancel_button.pack()
 
     def client_reservation_menu(self,client_list_var : str):
+        """Display the reservation of a client"""
         self.hide_all()
         self.client_reservation_frame.pack(fill="both", expand=1)
         reservation_of_client_label = Label(self.client_reservation_frame, text="Réservation du client",bg="white")
@@ -227,10 +228,59 @@ class View():
         date_of_ending_entry = Entry(self.room_available_for_time_slot_frame)
         date_of_ending_entry.insert(0, "Date de fin")
         date_of_ending_entry.pack()
-        validation_button = Button(self.room_available_for_time_slot_frame, text="valider", command=self.main_menu)
+        validation_button = Button(self.room_available_for_time_slot_frame, text="valider", command= lambda : self.show_room_available(date_of_beginning_entry.get(),date_of_ending_entry.get()),fg="white",bg="blue")
         validation_button.pack()
         cancel_button = Button(self.room_available_for_time_slot_frame, text="Annuler", command=self.show_menu)
         cancel_button.pack()
+
+
+    def show_room_available(self, start_date: str, end_date: str):
+        """Display the available rooms for the given time slot."""
+        
+        regex = r'\b(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4} ([01][0-9]|2[0-3]):[0-5][0-9]\b'
+        if not re.fullmatch(regex, start_date) or not re.fullmatch(regex, end_date): # check if the date is in the following format : jj/mm/yyyy hh:mm
+            self.show_error_message("Format de date invalide. Utilisez le format JJ/MM/AAAA HH:MM.")
+            return
+        
+        start_day, start_month, start_year = map(int, start_date.split(" ")[0].split('/'))
+        start_hour, start_minute = map(int, start_date.split(' ')[1].split(':'))
+        end_day, end_month, end_year = map(int, end_date.split(" ")[0].split('/'))
+        end_hour, end_minute = map(int, end_date.split(' ')[1].split(':'))
+        try:
+            time_interval = TimeInterval(datetime(start_year, start_month, start_day, start_hour, start_minute), datetime(end_year, end_month, end_day, end_hour, end_minute))
+        except ValueError as e:
+            self.show_error_message(f"Erreur lors de la création de l'intervalle de temps : {e}")
+            return
+        if time_interval.start_datetime < datetime.today():
+            self.show_error_message("La date de début de la réservation est déjà passée.")
+            return
+        
+        self.hide_all()
+        self.show_frame.pack(fill="both", expand=1)
+        self.client_reservation_frame.pack(fill="both", expand=1)
+        show_room_available_label = Label(self.show_frame, text="Réservation du client",bg="white")
+        show_room_available_label.pack()
+        
+        columns = ("Salle", "Type", "Capacité")
+        tree = ttk.Treeview(self.show_frame, columns=columns, show="headings", height=10)
+
+        for col in columns:
+            tree.heading(col, text=col)
+            tree.column(col, anchor="center")
+
+        try:
+            rooms = self.controller.get_rooms_available(start_year, start_month, start_day, start_hour, start_minute, end_year, end_month, end_day, end_hour, end_minute)
+            
+            if not rooms:
+                tree.insert("", "end", values=("Aucune reservation"))
+            else:
+                for room in rooms:
+                    tree.insert("", "end", values=(room.name, room.type, room.capacity))
+        except Exception as e:
+            self.show_error_message(f"Erreur lors de la récupération des salles : {e}")
+
+        tree.pack(fill="both", expand=1, padx=20, pady=10)
+
 
     def show_list_of_rooms(self):
         self.hide_all()
@@ -338,7 +388,7 @@ class View():
         start_hour, start_minute = map(int, date_of_beginning_variable.split(' ')[1].split(':'))
         end_day, end_month, end_year = map(int, end_date.split('/'))
         end_hour, end_minute = map(int, date_of_ending_variable.split(' ')[1].split(':'))
-        rooms_available = self.controller.get_rooms_available(start_year, start_month, start_day, start_hour, start_minute, end_year, end_month, end_day, end_hour, end_minute)
+        rooms_available = self.controller.get_rooms_available_per_type(start_year, start_month, start_day, start_hour, start_minute, end_year, end_month, end_day, end_hour, end_minute)
         time_interval = TimeInterval(datetime(start_year, start_month, start_day, start_hour, start_minute), datetime(end_year, end_month, end_day, end_hour, end_minute))
         if time_interval.start_datetime < datetime.today():
             self.show_error_message("La date de début de la réservation est déjà passée.")
@@ -452,7 +502,7 @@ class View():
         reservation_details_label.pack()
         main_menu_button = Button(self.validation_of_reservation_frame, text="menu principal", command=self.main_menu)
         main_menu_button.pack()
-        #self.controller.save()
+        self.controller.save()
 
     # hide all frames
     def hide_all(self):
