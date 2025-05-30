@@ -93,6 +93,7 @@ class View():
 
     def show_success_message(self, message: str):
         """Display a success message in a popup window."""
+        self.controller.save()
         success_window = Toplevel(self.root)
         success_window.title("Succès")
         success_label = Label(success_window, text=message, fg="green")
@@ -100,6 +101,7 @@ class View():
         close_button = Button(success_window, text="Fermer", command=success_window.destroy)
         close_button.pack(pady=10)
         success_window.geometry("700x100")
+        
 
 
     def new_room_menu(self):
