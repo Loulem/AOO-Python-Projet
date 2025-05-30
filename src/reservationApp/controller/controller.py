@@ -24,7 +24,7 @@ class Controller():
         """Add a new client to the model"""
         try:
             self.clients_manager.add_client( name , first_name ,email )
-            self.view.main_menu
+            self.view.main_menu()
         except ClientError as e:
             self.view.show_error_message(str(e))    
         else:
@@ -34,7 +34,7 @@ class Controller():
         """Add a new room to the model"""
         try:
             self.rooms_manager.add_room(name, type,capacity)
-            self.view.main_menu
+            self.view.main_menu()
         except RoomError as e:
             self.view.show_error_message(str(e))    
         else:

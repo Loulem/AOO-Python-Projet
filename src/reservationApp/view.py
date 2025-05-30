@@ -222,17 +222,17 @@ class View():
         
     def choose_room_menu(self,client_list_var : StringVar, date_of_beginning_variable : str, date_of_ending_variable : str):
         """Display the choose room menu with the available rooms for the given time slot."""
-        start_date = date_of_beginning_variable.split(' ')[0]
-        end_date = date_of_ending_variable.split(' ')[0]
         regex = r'\b(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\d{4} ([01][0-9]|2[0-3]):[0-5][0-9]\b'
         if not re.fullmatch(regex, date_of_beginning_variable) or not re.fullmatch(regex, date_of_ending_variable): # check if the date is in the following format : jj/mm/yyyy hh:mm
             self.show_error_message("Format de date invalide. Utilisez le format JJ/MM/AAAA HH:MM.")
             return
+        start_date = date_of_beginning_variable.split(' ')[0]
+        end_date = date_of_ending_variable.split(' ')[0]
         
         start_day, start_month, start_year = map(int, start_date.split('/'))
         start_hour, start_minute = map(int, date_of_beginning_variable.split(' ')[1].split(':'))
         end_day, end_month, end_year = map(int, end_date.split('/'))
-        end_hour, end_minute = map(int, date_of_beginning_variable.split(' ')[1].split(':'))
+        end_hour, end_minute = map(int, date_of_ending_variable.split(' ')[1].split(':'))
         rooms_available = self.controller.get_rooms_available(start_year, start_month, start_day, start_hour, start_minute, end_year, end_month, end_day, end_hour, end_minute)
         
         if (rooms_available == None ):
@@ -303,15 +303,18 @@ class View():
         validation_button.pack()
         cancel_button = Button(self.choose_room_frame, text="Annuler", command=self.reserve_menu)
         cancel_button.pack()
-      
+
 
 
     def validation_of_reservation_menu(self,client_list_var : StringVar, date_of_beginning_variable : StringVar, date_of_ending_variable : StringVar, room_list_var : StringVar):
         self.hide_all()
+
         self.validation_of_reservation_frame.pack(fill="both", expand=1)
         validation_of_reservation_label = Label(self.validation_of_reservation_frame, text="Réservation Validée!",bg="white")
         validation_of_reservation_label.pack()
-        client_label = Label(self.validation_of_reservation_frame, text=f"Client: {client_list_var.get()}",bg="white")
+        first_name = client_list_var.get().split(" ")[2]
+        last_name = client_list_var.get().split(" ")[5]
+        client_label = Label(self.validation_of_reservation_frame, text=f"Client: {first_name}{last_name}",bg="white")
         client_label.pack()
         begining_label = Label(self.validation_of_reservation_frame, text=f"Début: {date_of_beginning_variable}",bg="white")
         begining_label.pack()
@@ -319,7 +322,7 @@ class View():
         ending_label.pack()
         duration_label = Label(self.validation_of_reservation_frame, text=f"Durée: {date_of_ending_variable} - {date_of_beginning_variable}",bg="white")
         duration_label.pack()
-        room_label = Label(self.validation_of_reservation_frame, text=f"Salle: {room_list_var.get()}",bg="white")
+        room_label = Label(self.validation_of_reservation_frame, text=f"Salle: {room_list_var}",bg="white")
         room_label.pack()
         type_of_room_label = Label(self.validation_of_reservation_frame, text="Type de salle: ",bg="white")
         type_of_room_label.pack()
