@@ -1,6 +1,7 @@
 
 from tkinter import *
 import re
+from tkinter import ttk
 
 class View():
     def __init__(self,controller):    
@@ -179,7 +180,7 @@ class View():
         self.hide_all()
         self.show_frame.pack(fill="both", expand=1)
         
-        # Titre
+        """# Titre
         show_list_of_rooms_label = Label(self.show_frame, text="Liste des salles")
         show_list_of_rooms_label.pack()
         listbox = Listbox(self.show_frame)
@@ -188,8 +189,27 @@ class View():
         scrollbar = Scrollbar(self.show_frame)
         scrollbar.pack(side="right", fill="y")
         listbox.config(yscrollcommand=scrollbar.set)
-        scrollbar.config(command=listbox.yview)
+        scrollbar.config(command=listbox.yview)"""
+        # Get the list of rooms and display them in the listboxcolumns = ("Nom", "Type", "Capacité")
+        columns = ("Nom", "Type", "Capacité")
+        tree = ttk.Treeview(self.show_frame, columns=columns, show="headings", height=10)
 
+        for col in columns:
+            tree.heading(col, text=col)
+            tree.column(col, anchor="center")
+
+        try:
+            rooms = self.controller.get_rooms_list()
+            if not rooms:
+                tree.insert("", "end", values=("Aucune salle disponible", "", ""))
+            else:
+                for room in rooms:
+                    tree.insert("", "end", values=(room.name, room.type, room.capacity))
+        except Exception as e:
+            self.show_error_message(f"Erreur lors de la récupération des salles : {e}")
+
+        tree.pack(fill="both", expand=1, padx=20, pady=10)
+        """
         try:
             rooms = self.controller.get_rooms_list()
             if not rooms:
@@ -200,7 +220,7 @@ class View():
                 room_info = f"{room.name} | Type: {room.type} | Capacité: {room.capacity}"
                 listbox.insert(END, room_info)
         except Exception as e:
-            self.show_error_message(f"Erreur lors de la récupération des salles : {e}")
+            self.show_error_message(f"Erreur lors de la récupération des salles : {e}")"""
 
 
 
