@@ -27,10 +27,7 @@ class ClientManager():
         
     def get_clients_infos(self,email : str) -> dict:
         return self.clients[email].to_dictionnary()
-    @property
-    def clients_list(self) -> list[Client]:
-        """Get a list of clients"""
-        return list(self.clients.values())
+    
     @property
     def clients_name(self) -> list[str]:
         """Get a list of clients name"""
@@ -52,7 +49,7 @@ class Client():
     def __init__(self,name : str, first_name : str, email : str) -> None:
         self.name = name
         self.first_name = first_name
-        self.email = email  # ajouter un property pour afficher une erreur si l’email n’est pas de la forme ____@___.__
+        self.email = email  
         self.id = str(uuid.uuid4())
         self._reservertions_id : list[str] = [] #TODO: ajouter les reservations id quand on load et quand on les créer 
 

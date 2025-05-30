@@ -67,3 +67,10 @@ def test_add_reservation_error():
     with pytest.raises(Reservation_app_error):
         # test if the client does not exist
         controller.add_reservation("Room1", TimeInterval(tomorow + timedelta(hours=2),tomorow+ timedelta(hours=5)), "not_a_client")
+
+
+def test_time_interval_error():
+    controller = Controller()
+    with pytest.raises(Exception):
+        # test if the time interval is invalid
+        TimeInterval(datetime(2023, 10, 1, 12, 20), datetime(2022, 10, 1, 12, 20))
