@@ -199,7 +199,7 @@ class View():
         try:
             rooms = self.controller.get_rooms_list()
             if not rooms:
-                tree.insert("", "end", values=("Aucune salle disponible", "", ""))
+                tree.insert("", "end", values=("Aucune reservation"))
             else:
                 for room in rooms:
                     tree.insert("", "end", values=(room.name, room.type, room.capacity))
