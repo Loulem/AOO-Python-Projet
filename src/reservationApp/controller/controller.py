@@ -45,7 +45,7 @@ class Controller():
     
     def get_rooms_list(self) -> list[Room]:
         """Get the list of rooms"""
-        return self.rooms_manager.rooms_lis
+        return self.rooms_manager.rooms_list
     def add_room(self, name : str, type : str,capacity) -> None:
         """Add a new room to the model"""
 
@@ -58,14 +58,15 @@ class Controller():
             self.view.show_success_message(f"Room {name} of type {type} with capacity {capacity} added successfully.")
 
     def get_reservations_of_client(self, client_email : str) -> list[Reservation]:
-        client_id = self.clients_manager.clients[client_email].id
         client_reservations = []
         for reservation in self.reservations_manager.reservations.values():
-            if reservation.client_id == client_id:
+            if reservation.client_id == client_email:
                 client_reservations.append(reservation)
         return client_reservations
 
-    
+    def get_rooms_infos(self, room_name : str) -> Room:
+        """Get the infos of a room"""
+        return self.rooms_manager.rooms[room_name]
 
     def get_rooms_available_per_type(self,start_year,start_month,start_day,start_hour,minute,end_year,end_month,end_day,end_hour,end_minute)-> tuple[list[Room],list[Room],list[Room]] | None:
         """Give a list of all the available room for a time interval for each type"""

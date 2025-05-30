@@ -5,7 +5,7 @@ from tkinter import ttk
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from reservationApp.controller.controller import Controller  # imported only for type checking
-    from reservationApp.model.model import Client, Room, TimeInterval
+    from reservationApp.model.model import Client, Room, TimeInterval,Reservation
     from reservationApp.model.client.client import Client
 from reservationApp.model.time_Interval import TimeInterval
 from datetime import datetime, timedelta
@@ -185,8 +185,8 @@ class View():
         cancel_button = Button(self.reservation_frame, text="Annuler", command=self.show_menu,fg="white",bg="blue4")
         cancel_button.pack()
 
-    def client_reservation_menu(self,client_list_var : str):
-        """Display the reservation of a client"""
+    def client_reservation_menu(self,clien_email : str):
+        """Display the reservations of a client"""
         self.hide_all()
         self.client_reservation_frame.pack(fill="both", expand=1)
         reservation_of_client_label = Label(self.client_reservation_frame, text="Réservation du client",bg="white")
@@ -195,7 +195,7 @@ class View():
         client_label.pack()
         reservation_label= Label(self.client_reservation_frame, text="Réservation:",bg="white")
         reservation_label.pack()
-        show_client_label = Label(self.client_reservation_frame, text=f"Client: {client_list_var}",bg="white")
+        show_client_label = Label(self.client_reservation_frame, text=f"Client: {clien_email}",bg="white")
         show_client_label.pack()
         back_button = Button(self.client_reservation_frame, text="Retour", command=self.reservation_menu,fg="white",bg="blue4")
         back_button.pack()
@@ -207,14 +207,15 @@ class View():
             tree.heading(col, text=col)
             tree.column(col, anchor="center")
         try:
-            reservations = self.controller.get_rooms_list()
+            reservations = self.controller.get_reservations_of_client(clien_email)
             if not reservations:
                 tree.insert("", "end", values=("Aucune reservation"))
             else:
                 for reservation in reservations:
-                    tree.insert("", "end", values=(reservation.name, reservation.type, reservation.capacity,reservation.Time_interval, reservation.start_datetime, reservation.duration))
+                    room = self.controller.get_rooms_infos(reservation.room)
+                    tree.insert("", "end", values=(reservation.room, room.type, room.capacity,reservation.time_interval.start_datetime, reservation.time_interval.end_datetime, reservation.time_interval.duration))
         except Exception as e:
-            self.show_error_message(f"Erreur lors de la récupération des salles : {e}")
+            self.show_error_message(f"Erreur lors de la récupération des réservations : {e}")
         tree.pack(fill="both", expand=1, padx=20, pady=10)
 
 
