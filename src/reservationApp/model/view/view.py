@@ -131,7 +131,7 @@ class View():
         new_room_label = Label(fields_frame, text="Ajouter une nouvelle salle :",bg="white",font=(15))
         new_room_label.pack(pady=30)
         var = StringVar()
-        new_room_name_entry = Entry(fields_frame, text="Nom de la salle",bg="powderblue",font=(15)) # TODO remove use of text parameter
+        new_room_name_entry = Entry(fields_frame, text="Nom de la salle",bg="powderblue",font=(15)) 
         new_room_name_entry.pack(pady=30)
         #capacity
         capacity = [str(i) for i in range(1,14)]
@@ -168,7 +168,7 @@ class View():
         show_book_of_clients_button = Button(center_frame, text="Afficher les reservation d'un clients", command=self.reservation_menu,fg="white",bg="blue4",height=1, width=40,font=(15))
         show_book_of_clients_button.pack(padx=20, pady=20)
 
-    def reservation_menu(self):# TODO change the name of this function to show_reservation_menu
+    def reservation_menu(self):
         """Display the reservation menu where the user can choose a client to reserve a room."""
         self.hide_all()
         self.reservation_frame.pack(fill="both", expand=1)
@@ -178,7 +178,7 @@ class View():
         client_label = Label(self.reservation_frame, text="Client:",bg="white")
         client_label.pack()
         client_dict = self.controller.get_clients_dict()  
-        # TODO if the list is empty there is an error, add something to handle this case
+        
         
         client_keys = list(client_dict.keys())
         client_list = StringVar()
