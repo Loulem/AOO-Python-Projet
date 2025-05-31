@@ -56,7 +56,7 @@ class Client():
         self.first_name = first_name
         self.email = email  
         self.id = str(uuid.uuid4())
-        self.reservertions_id : list[str] = [] #TODO: ajouter les reservations id quand on load et quand on les créer 
+
 
     @property
     def email(self) -> str:

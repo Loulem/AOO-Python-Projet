@@ -1,6 +1,6 @@
 from __future__ import annotations # if some class use type defined later 
 from reservationApp.model.model import *
-from reservationApp.view import View
+from reservationApp.model.view.view import View
 
 class Reservation_app_error(Exception):
     """Base class for all exceptions raised by the reservation app"""
@@ -19,11 +19,12 @@ class Controller():
         """Save the model data to a file"""
         self.model.save_data("./data/data.json")
     
-    def start_view(self):
-        """Start the view"""
+    def run(self):
+        """Run the app"""
         self.model.load_data("./data/data.json")
         self.view = View(self)
         self.view.main()
+        self.model.save_data("./data/data.json")
 
     def add_client(self, name : str, first_name : str ,email : str) -> None :
         """Add a new client to the model"""
@@ -104,35 +105,3 @@ class Controller():
         self.reservations_manager.add_reservations(new_reservation)
         
 
-    
-
-
-
-
-if __name__ == "__main__":
-    controller = Controller()
-    
-    controller.start_view()
-    controller.save()
-
-    """
-    controller = Controller()
-    controller.add_client("Mael","Legoff", "mael@uha.fr")
-    controller.add_client("Lou","Lemarechal" ,"lou@uha.fr")
-    controller.add_client("Paul", "tin","paul@gmail.com")
-    controller.add_room("Room1", "Conference")
-    controller.add_room("Room2", "Meeting")
-    controller.add_reservation("Room1", TimeInterval(datetime(2026, 10, 1,12,20), datetime(2026, 10, 1,12,20)), "mael@uha.fr")
-    
-    controller.model.save_data("./data/test.json")
-    controller2 = Controller()
-    controller2.model.load_data("./data/test.json")
-    print(controller2.model.clients_manager.clients_email[0])
-    t1 = datetime.today()
-    mael_name = controller.clients_manager.clients_name
-    controller.clients_manager.clients["mael@uha.fr"].name = "hello"
-    print(controller.clients_manager.clients_name)
-    print(mael_name)
-    t2 = t1 + timedelta(minutes=1)
-    print(t1 < t2)
-    print(t2)"""
