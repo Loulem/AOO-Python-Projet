@@ -54,4 +54,4 @@ pytest
 ```
 Auteurs :
 - Lou Lemarechal lou.lemarechal@uha.fr
-- Mael Legoff mael.legoff@uha.fr
+- Mael Le-goff mael.legoff@uha.fr
