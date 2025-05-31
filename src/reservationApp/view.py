@@ -75,10 +75,12 @@ class View():
     def new_client_menu(self):
         self.hide_all()
         self.new_client_frame.pack(fill="both", expand=1)
+        # Positioning frame
         fields_frame = Frame(self.new_client_frame, bg="white")
         fields_frame.pack(anchor="w", padx=20, pady=40, fill="x")
         buttons_frame = Frame(self.new_client_frame, bg="white")
         buttons_frame.pack(side="bottom", fill="x", pady=20, padx=20)
+
         new_client_label = Label(fields_frame, text="Ajouter un client",bg="white",font=(15))
         new_client_label.pack()
         new_client_name_entry = Entry(fields_frame,bg="powderblue",font=(15))
@@ -122,7 +124,7 @@ class View():
         self.new_room_frame.pack(fill="both", expand=1)
         # Positioning frame
         fields_frame = Frame(self.new_room_frame, bg="white")
-        fields_frame.pack(anchor="w", padx=100, pady=40)
+        fields_frame.pack(padx=20, pady=20)
         buttons_frame = Frame(self.new_room_frame, bg="white")
         buttons_frame.pack(side="bottom", fill="x", pady=20, padx=20)
         #Name room
@@ -362,26 +364,27 @@ class View():
         buttons_frame = Frame(self.reserve_frame, bg="white")
         buttons_frame.pack(side="bottom", fill="x", pady=30, padx=30)
         fields_frame = Frame(self.reserve_frame, bg="white")
-        fields_frame.pack(anchor="w", padx=40, pady=40)
-
+        fields_frame.pack(expand=True)
+        fields_frame.grid_columnconfigure(0, weight=1)
+        fields_frame.grid_columnconfigure(1, weight=1)
 
         reserve_label = Label(fields_frame, text="Réserver une salle :",bg="white", font=(15))
-        reserve_label.grid(row=0, column=0, columnspan=2, sticky="w", pady=(20))
+        reserve_label.grid(row=0, column=0, columnspan=2, pady=(20))
         # Start
         begin_label = Label(fields_frame, text="Début:",bg="white",font=(15))
-        begin_label.grid(row=1, column=0, sticky="w", pady=5)
+        begin_label.grid(row=1, column=0, pady=5,sticky="e")
         date_of_beginning_entry = Entry(fields_frame,bg="powderblue",font=(15))
         date_of_beginning_entry.insert(0, "01/01/2024 12:00")  # Example date format
-        date_of_beginning_entry.grid(row=1, column=1, sticky="w", pady=(20))
+        date_of_beginning_entry.grid(row=1, column=1, pady=(20),sticky="e")
         # End
         end_label = Label(fields_frame, text="Fin:",bg="white",font=(15))
-        end_label.grid(row=2, column=0, sticky="w", pady=5)
+        end_label.grid(row=2, column=0, pady=5,sticky="e")
         date_of_ending_entry = Entry(fields_frame,bg="powderblue",font=(15))
         date_of_ending_entry.insert(0, "01/01/2024 13:00")
-        date_of_ending_entry.grid(row=2, column=1, sticky="w", pady=(20))
+        date_of_ending_entry.grid(row=2, column=1, pady=(20),sticky="e")
         # Client
         client_label = Label(fields_frame, text="Client:",bg="white",font=(15))
-        client_label.grid(row=3, column=0, sticky="w", pady=5)
+        client_label.grid(row=3, column=0, pady=5,sticky="e")
         client_dict = self.controller.get_clients_dict()  
         client = list(client_dict.keys())  # Create a list of client names
         client_list= StringVar()
@@ -390,7 +393,7 @@ class View():
         else : 
             client_list.set(client[0])  # Set default value
             client_option_menu = OptionMenu(fields_frame, client_list, *client)
-            client_option_menu.grid(row=3, column=1, sticky="w", pady=20)
+            client_option_menu.grid(row=3, column=1, pady=20,sticky="w")
         validation_button = Button(buttons_frame, text="Valider", command=lambda: self.choose_room_menu(client_dict[client_list.get()], date_of_beginning_entry.get(), date_of_ending_entry.get()),fg="white",bg="blue4",height=1, width=20,font=(15))
         validation_button.pack(side="right", anchor="se")
         cancel_button = Button(buttons_frame, text="Annuler", command=lambda: self.main_menu(),fg="white",bg="blue4",height=1, width=20,font=(15))
