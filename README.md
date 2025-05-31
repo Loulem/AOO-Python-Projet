@@ -1,6 +1,6 @@
 # ReservationApp
 
-Le but de ce projet est de créer une application de réservation de salle. Cette application comporte une interface graphique permettant à l’utilisateur d’interagir pour réserver des salles selon des horaires, ainsi que pour l’administrateur de pouvoir gérer les salles (en ajouter ou supprimer).
+Le but de ce projet est de créer une application de réservation de salle. Cette application comporte une interface graphique permettant à l’utilisateur d’interagir pour réserver des salles selon des horaires, ainsi que pour l’administrateur de pouvoir gérer les salles (en ajouter).
 
 ## Fonctionnalités
 
