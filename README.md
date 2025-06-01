@@ -14,6 +14,29 @@ Le but de ce projet est de créer une application de réservation de salle. Cett
 - **Sauvegarde/chargement** : sauvegarde automatique des données dans un fichier JSON.
 - **Architecture claire** : séparation Model / View / Controller, managers dédiés pour chaque type de données.
 
+## Installation 
+
+1. **Cloner le dépôt**
+
+  ```bash
+  git clone https://github.com/Loulem/AOO-Python-Projet.git
+  cd AOO-Python-Projet
+  ```
+2. **Installer les dépendances**
+
+Assurez-vous d’avoir Python 3.10 ou supérieur installé, puis lancez :
+  ```bash
+   pip install -e .
+   ```
+
+3. **Lancer l’application**
+
+Depuis la racine du projet, exécutez :
+ ```bash
+   python src/reservationApp/main.py
+   ```
+L’application s’ouvrira automatiquement.
+
 ## Utilisation
 
 - **Accueil** : accès rapide aux principales fonctionnalités.
